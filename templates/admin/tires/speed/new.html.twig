@@ -1,0 +1,27 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}New Speed Index{% endblock %}
+
+{% block content_header %}Add new speed index{% endblock %}
+
+{% block content %}
+    <div class="row pt-3">
+
+        <div class="col-12">
+            <div class="card text-dark border-dark mb-3 bg-light shadow">
+
+                <div class="card-header">
+                    <i class="bi bi-plus-square mr-2"></i>
+                    ADD NEW SPEED INDEX
+                </div>
+
+                <div class="card-body">
+                    {{ form(speedForm) }}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+

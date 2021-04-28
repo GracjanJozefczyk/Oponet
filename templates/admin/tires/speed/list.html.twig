@@ -1,0 +1,95 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Speed rating{% endblock %}
+
+{% block content_header %}Speed rating{% endblock %}
+
+{% block content %}
+    <div class="row pt-3">
+
+        <div class="col-sm-3">
+            <div class="card text-primary border-primary mb-3 bg-light shadow">
+                <div class="card-header">
+                    <i class="bi bi-tags-fill mr-2"></i>
+                    TOTAL INDEXES
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-outline-primary  btn-block" disabled>1</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="card text-success border-success mb-3 bg-light shadow">
+                <div class="card-header">
+                    <i class="bi bi-plus-square mr-2"></i>
+                    NEW INDEX
+                </div>
+                <div class="card-body">
+                    <a href="{{ path('admin_tires_speed_new') }}" class="btn btn-outline-success btn-block">ADD</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row pt-3">
+
+        <div class="col-12">
+            <div class="card text-dark border-dark mb-3 bg-light shadow">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="bi bi-list-check mr-2"></i>
+                        LIST OF BRANDS
+                    </div>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                            <i class="bi bi-funnel"></i>
+                            Sort by
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-light table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 2%">#</th>
+                            <th scope="col">Symbol</th>
+                            <th scope="col">km/h</th>
+                            <th scope="col">mph</th>
+                            <th scope="col" style="width: 5%">Show</th>
+                            <th scope="col" style="width: 5%">Edit</th>
+                            <th scope="col" style="width: 5%">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for speed in speeds %}
+                            <tr>
+                                <td class="align-middle">{{ speed.id }}</td>
+                                <td class="align-middle">{{ speed.symbol }}</td>
+                                <td class="align-middle">{{ speed.kmh }}</td>
+                                <td class="align-middle">{{ speed.mph }}</td>
+                                <td class="align-middle">
+                                    <a class="btn btn-outline-success" href="#">
+                                        <i class="bi bi-search"></i>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a class="btn btn-outline-warning" href="#">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a class="btn btn-outline-danger" href="#">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

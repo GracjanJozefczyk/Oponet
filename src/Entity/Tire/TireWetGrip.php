@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Entity\Tire;
+
+use App\Repository\Tire\TireWetGripRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=TireWetGripRepository::class)
+ */
+class TireWetGrip
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $wetGrip;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getWetGrip(): ?string
+    {
+        return $this->wetGrip;
+    }
+
+    public function setWetGrip(string $wetGrip): self
+    {
+        $this->wetGrip = $wetGrip;
+
+        return $this;
+    }
+}

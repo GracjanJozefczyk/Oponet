@@ -3,9 +3,9 @@
 
 namespace App\Controller\Admin\Tires;
 
-use App\Entity\TireBrand;
-use App\Form\TireBrandFormType;
-use App\Repository\TireBrandRepository;
+use App\Entity\Tire\TireBrand;
+use App\Form\Tires\TireBrandFormType;
+use App\Repository\Tire\TireBrandRepository;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +31,7 @@ class AdminTiresBrandsController extends AbstractController
     /**
      * @Route("/admin/tires/brands/new", name="admin_tires_brands_new")
      */
-    public function new(EntityManagerInterface $em, Request $request, UploaderHelper $uploaderHelper): Response
+    public function new(EntityManagerInterface $em, Request $request): Response
     {
         $form = $this->createForm(TireBrandFormType::class);
 
@@ -40,14 +40,6 @@ class AdminTiresBrandsController extends AbstractController
 
             /** @var TireBrand $brand */
             $brand = $form->getData();
-
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form['imageFile']->getData();
-
-            if ($uploadedFile) {
-                $filename = $uploaderHelper->uploadBrandImage($uploadedFile, $form['name']->getData());
-                $brand->setImg($filename);
-            }
 
             $em->persist($brand);
             $em->flush();
@@ -62,20 +54,12 @@ class AdminTiresBrandsController extends AbstractController
     /**
      * @Route("/admin/tires/brands/{id}/edit", name="admin_tires_brands_edit")
      */
-    public function edit(TireBrand $brand, EntityManagerInterface $em, Request $request, UploaderHelper $uploaderHelper): Response
+    public function edit(TireBrand $brand, EntityManagerInterface $em, Request $request): Response
     {
         $form = $this->createForm(TireBrandFormType::class, $brand);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form['imageFile']->getData();
-
-            if ($uploadedFile) {
-                $filename = $uploaderHelper->uploadBrandImage($uploadedFile, $form['name']->getData());
-                $brand->setImg($filename);
-            }
 
             $em->persist($brand);
             $em->flush();
@@ -100,4 +84,19 @@ class AdminTiresBrandsController extends AbstractController
 
         return $this->redirectToRoute('admin_tires_brands');
     }
+
+    /**
+     * @Route("/admin/tires/brands/uploadImage", name="admin_tires_brands_uploadImage")
+     */
+    public function uploadImage(Request $request, UploaderHelper $uploaderHelper): Response
+    {
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $request->files->get('file');
+
+        if ($uploadedFile) {
+            $filename = $uploaderHelper->uploadBrandImage($uploadedFile);
+        }
+        return $this->json(['filename' => $filename], 200);
+    }
+
 }

@@ -44,21 +44,51 @@
                     </h6>
                     <ul class="nav flex-column">
                         <li class="nav-item">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin_tires_features') %}active{% endif %}" href="{{ path('admin_tires_features') }}">
+                                <i class="bi bi-tags-fill"></i>
+                                Features
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {% if app.request.pathInfo == path('admin_tires_brands') %}active{% endif %}" href="{{ path('admin_tires_brands') }}">
+                                <i class="bi bi-tags-fill"></i>
+                                Brands
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin_tires_models') %}active{% endif %}" href="{{ path('admin_tires_models') }}">
+                                <i class="bi bi-bookmark"></i>
+                                Models
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin_tires_products') %}active{% endif %}" href="{{ path('admin_tires_products') }}">
+                                <i class="bi bi-gear-wide"></i>
+                                Products
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>VEHICLES</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin') %}active{% endif %}" href="{{ path('admin') }}">
+                                <i class="bi bi-house-fill"></i>
+                                Types
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin') %}active{% endif %}" href="{{ path('admin') }}">
                                 <i class="bi bi-house-fill"></i>
                                 Brands
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if app.request.pathInfo == path('admin_tires_speed') %}active{% endif %}" href="{{ path('admin_tires_speed') }}">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin') %}active{% endif %}" href="{{ path('admin') }}">
                                 <i class="bi bi-house-fill"></i>
-                                Speed ratings
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if app.request.pathInfo == path('admin_tires_speed') %}active{% endif %}" href="{{ path('admin_tires_speed') }}">
-                                <i class="bi bi-house-fill"></i>
-                                Load indexes
+                                Models
                             </a>
                         </li>
                     </ul>

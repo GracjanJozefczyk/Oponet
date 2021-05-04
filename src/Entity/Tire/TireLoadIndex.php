@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Tire;
 
-use App\Repository\TireSpeedRatingRepository;
+use App\Repository\Tire\TireLoadIndexRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TireSpeedRatingRepository::class)
+ * @ORM\Entity(repositoryClass=TireLoadIndexRepository::class)
  */
-class TireSpeedRating
+class TireLoadIndex
 {
     /**
      * @ORM\Id
@@ -18,14 +18,14 @@ class TireSpeedRating
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\Column(type="string", length=10)
      */
-    private $symbol;
+    private $loadIndex;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $kmh;
+    private $kg;
 
     /**
      * @ORM\Column(type="integer")
@@ -37,26 +37,26 @@ class TireSpeedRating
         return $this->id;
     }
 
-    public function getSymbol(): ?string
+    public function getLoadIndex(): ?string
     {
-        return $this->symbol;
+        return $this->loadIndex;
     }
 
-    public function setSymbol(string $symbol): self
+    public function setLoadIndex(string $loadIndex): self
     {
-        $this->symbol = $symbol;
+        $this->loadIndex = $loadIndex;
 
         return $this;
     }
 
-    public function getKmh(): ?int
+    public function getKg(): ?int
     {
-        return $this->kmh;
+        return $this->kg;
     }
 
-    public function setKmh(int $kmh): self
+    public function setKg(int $kg): self
     {
-        $this->kmh = $kmh;
+        $this->kg = $kg;
 
         return $this;
     }

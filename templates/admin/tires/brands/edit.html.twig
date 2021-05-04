@@ -4,7 +4,61 @@
 
 {% block content_header %}Add new brand{% endblock %}
 
+{% block topjavascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"
+            integrity="sha512-VQQXLthlZQO00P+uEu4mJ4G4OAgqTtKG1hri56kQY1DtdLeIqhKUp9W/lllDDu3uN3SnUNawpW7lBda8+dSi7w=="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js"
+            integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA=="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css"
+          integrity="sha512-jU/7UFiaW5UBGODEopEqnbIAHOI8fO6T99m7Tsmqs2gkdujByJfkCbbfPSN4Wlqlb9TGnsuC0YgUgWkRBK7B9A=="
+          crossorigin="anonymous"
+    />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css"
+          integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA=="
+          crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+{% endblock %}
+
 {% block content %}
+    <div class="row pt-3">
+        <div class="col-2" id="old_brand_image">
+            <div class="card h-100 text-dark border-dark mb-3 bg-light shadow">
+                <div class="card-header">
+                    <i class="bi bi-plus-square mr-2"></i>
+                    ADD BRAND PHOTO
+                </div>
+                <div class="card-body">
+                    <img src="{{ asset(brandForm.vars.data.imageUrl) }}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 text-dark border-dark mb-3 bg-light shadow">
+                <div class="card-header">
+                    <i class="bi bi-plus-square mr-2"></i>
+                    ADD BRAND PHOTO
+                </div>
+                <div class="card-body">
+                    <div id="dropzone" class="dropzone p-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row pt-3">
 
         <div class="col-12">
@@ -18,7 +72,7 @@
                 <div class="card-body">
                     {{ form_start(brandForm) }}
                     {{ form_row(brandForm.name) }}
-                    {{ form_row(brandForm.imageFile) }}
+                    {{ form_row(brandForm.imageUrl) }}
                     {{ form_row(brandForm.description) }}
                     <div class="row pt-3">
                         <div class="col-6">
@@ -41,4 +95,95 @@
         </div>
 
     </div>
+
+    <script>
+        $(".dropzone").dropzone({
+            url: "{{ path('admin_tires_brands_uploadImage') }}",
+            maxFiles: 1,
+            dictDefaultMessage: "Drop Brand Logo here...",
+            addRemoveLinks: true,
+            init: function() {
+                this.on("success", function(file, response) {
+                    $("#tire_brand_form_imageUrl").val(response.filename);
+                    $("#old_brand_image").hide();
+                })
+            },
+            transformFile: function(file, done) {
+
+                var myDropZone = this;
+
+                // Create the image editor overlay
+                var editor = document.createElement('div');
+                editor.style.position = 'fixed';
+                editor.style.left = 0;
+                editor.style.right = 0;
+                editor.style.top = 0;
+                editor.style.bottom = 0;
+                editor.style.zIndex = 9999;
+                editor.style.backgroundColor = '#000';
+
+                // Create the confirm button
+                var confirm = document.createElement('button');
+                confirm.style.position = 'absolute';
+                confirm.style.left = '10px';
+                confirm.style.top = '10px';
+                confirm.style.zIndex = 9999;
+                confirm.textContent = 'Confirm';
+                confirm.addEventListener('click', function() {
+
+                    // Get the canvas with image data from Cropper.js
+                    var canvas = cropper.getCroppedCanvas({
+                        width: 256,
+                        height: 256
+                    });
+
+                    // Turn the canvas into a Blob (file object without a name)
+                    canvas.toBlob(function(blob) {
+
+                        // Update the image thumbnail with the new image data
+                        myDropZone.createThumbnail(
+                            blob,
+                            myDropZone.options.thumbnailWidth,
+                            myDropZone.options.thumbnailHeight,
+                            myDropZone.options.thumbnailMethod,
+                            false,
+                            function(dataURL) {
+
+                                // Update the Dropzone file thumbnail
+                                myDropZone.emit('thumbnail', file, dataURL);
+
+                                // Return modified file to dropzone
+                                done(blob);
+                            }
+                        );
+
+                    });
+
+                    // Remove the editor from view
+                    editor.parentNode.removeChild(editor);
+
+                });
+                editor.appendChild(confirm);
+
+                // Load the image
+                var image = new Image();
+                image.src = URL.createObjectURL(file);
+                editor.appendChild(image);
+
+                // Append the editor to the page
+                document.body.appendChild(editor);
+                // Create Cropper.js and pass image
+                var cropper = new Cropper(image, {
+                    aspectRatio: 1
+                });
+
+            }
+        });
+    </script>
+    <script>
+        var simplemde = new SimpleMDE({
+            element: $('#tire_brand_form_description')[0],
+            toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "link", "table", "|", "preview"]
+        });
+    </script>
 {% endblock %}

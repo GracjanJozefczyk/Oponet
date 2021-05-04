@@ -20,10 +20,12 @@ class UploaderHelper
         $this->uploadsPath = $uploadsPath;
     }
 
-    public function uploadBrandImage(UploadedFile $uploadedFile, string $filename): string
+    public function uploadBrandImage(UploadedFile $uploadedFile): string
     {
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
         $destination = $this->uploadsPath.'/tires_brands';
-        $filename = preg_replace('/[^a-z0-9]+/', '_', strtolower($filename)).'.'.$uploadedFile->guessExtension();
+        $filename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
 
         $uploadedFile->move(
             $destination,

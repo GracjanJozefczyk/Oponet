@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Tire;
 
-use App\Entity\TireSpeedRating;
+use App\Entity\Tire\TireModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TireSpeedRating|null find($id, $lockMode = null, $lockVersion = null)
- * @method TireSpeedRating|null findOneBy(array $criteria, array $orderBy = null)
- * @method TireSpeedRating[]    findAll()
- * @method TireSpeedRating[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TireModel|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TireModel|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TireModel[]    findAll()
+ * @method TireModel[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TireSpeedRatingRepository extends ServiceEntityRepository
+class TireModelRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TireSpeedRating::class);
+        parent::__construct($registry, TireModel::class);
     }
 
     // /**
-    //  * @return TireSpeedRating[] Returns an array of TireSpeedRating objects
+    //  * @return TireModel[] Returns an array of TireModel objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TireSpeedRatingRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TireSpeedRating
+    public function findOneBySomeField($value): ?TireModel
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

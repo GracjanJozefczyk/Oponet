@@ -1,8 +1,8 @@
 {% extends 'admin/index.html.twig' %}
 
-{% block title %}New Speed Index{% endblock %}
+{% block title %}New Tire Product{% endblock %}
 
-{% block content_header %}Add new speed index{% endblock %}
+{% block content_header %}Add new tire product{% endblock %}
 
 {% block content %}
     <div class="row pt-3">
@@ -12,11 +12,11 @@
 
                 <div class="card-header">
                     <i class="bi bi-plus-square mr-2"></i>
-                    ADD NEW SPEED INDEX
+                    ADD NEW PRODUCT
                 </div>
 
                 <div class="card-body">
-                    {{ form(speedForm) }}
+                    {{ form(productForm) }}
                 </div>
 
             </div>
@@ -24,4 +24,3 @@
 
     </div>
 {% endblock %}
-

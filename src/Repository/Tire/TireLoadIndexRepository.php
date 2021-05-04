@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Repository\Tire;
+
+use App\Entity\Tire\TireLoadIndex;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @method TireLoadIndex|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TireLoadIndex|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TireLoadIndex[]    findAll()
+ * @method TireLoadIndex[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class TireLoadIndexRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, TireLoadIndex::class);
+    }
+
+    // /**
+    //  * @return TireLoadIndex[] Returns an array of TireLoadIndex objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('t.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
+
+    /*
+    public function findOneBySomeField($value): ?TireLoadIndex
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
+}

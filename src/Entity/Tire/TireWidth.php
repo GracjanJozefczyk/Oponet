@@ -4,9 +4,11 @@ namespace App\Entity\Tire;
 
 use App\Repository\Tire\TireWidthRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TireWidthRepository::class)
+ * @UniqueEntity("width")
  */
 class TireWidth
 {

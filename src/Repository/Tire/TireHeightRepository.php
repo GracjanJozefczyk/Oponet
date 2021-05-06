@@ -19,6 +19,11 @@ class TireHeightRepository extends ServiceEntityRepository
         parent::__construct($registry, TireHeight::class);
     }
 
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('height' => 'ASC'));
+    }
+
     // /**
     //  * @return TireHeight[] Returns an array of TireHeight objects
     //  */

@@ -1,0 +1,84 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Features{% endblock %}
+
+{% block content_header %}Features{% endblock %}
+
+{% block content %}
+
+    <div class="card-deck pt-3">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-arrow-left-right"></i>
+                WIDTH
+            </div>
+            <img src="{{ asset('images/dashboard/tire_width.png') }}" class="card-img-top" alt="#">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for width in tiresWidth %}
+                        <li class="list-group-item d-flex justify-content-around align-items-center">
+                            {{ width.width }}
+                            <a href="{{ path('admin_tires_features_delete', { id: width.id, feature: 'width' }) }}">
+                                <i class="bi bi-trash-fill text-danger"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer">
+                {{ form_start(widthForm) }}
+                    {{ form_row(widthForm.width) }}
+                    <button type="submit" class="btn btn-success btn-block">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Add
+                    </button>
+                {{ form_end(widthForm) }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-arrow-down-up"></i>
+                HEIGHT
+            </div>
+            <img src="{{ asset('images/dashboard/tire_height.png') }}" class="card-img-top" alt="#">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for height in tiresHeight %}
+                        <li class="list-group-item d-flex justify-content-around align-items-center">
+                            {{ height.height }}
+                            <a href="{{ path('admin_tires_features_delete', { id: height.id, feature: 'height' }) }}">
+                                <i class="bi bi-trash-fill text-danger"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer">
+                {{ form_start(heightForm) }}
+                    {{ form_row(heightForm.height) }}
+                    <button type="submit" class="btn btn-success btn-block">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Add
+                    </button>
+                {{ form_end(heightForm) }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-arrows-angle-expand"></i>
+                RIM
+            </div>
+            <img src="{{ asset('images/dashboard/tire_rim.png') }}" class="card-img-top" alt="#">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is content</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last upd</small>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

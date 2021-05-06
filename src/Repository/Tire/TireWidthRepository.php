@@ -19,6 +19,11 @@ class TireWidthRepository extends ServiceEntityRepository
         parent::__construct($registry, TireWidth::class);
     }
 
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('width' => 'ASC'));
+    }
+
     // /**
     //  * @return TireWidth[] Returns an array of TireWidth objects
     //  */

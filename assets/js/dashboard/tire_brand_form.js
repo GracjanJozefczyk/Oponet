@@ -16,66 +16,58 @@ let simplemde = new SimpleMDE({
 Dropzone.autoDiscover = false;
 
 let myDropzone = new Dropzone("#dropzone", {
-    url: "/admin/tires/brands/uploadImage",
-    maxFiles: 1,
+    acceptedFiles: 'image/*',
+    // maxFiles: 1,
+    parallelUploads: 1,
     dictDefaultMessage: "Drop Brand Logo here...",
     addRemoveLinks: true,
     init: function () {
         this.on("success", function (file, response) {
             $("#tire_brand_form_imageUrl").val(response.filename);
             $("#old_brand_image").hide();
-        })
+            $("#modal").modal('hide');
+        });
+        this.on("removedfile", function (file) {
+            console.log(file);
+        });
     },
     transformFile: function (file, done) {
-        $("#modal").modal('show');
 
-        // Load the image
+        var myDropZone = this;
         var image = new Image();
         image.src = URL.createObjectURL(file);
-        image.className = "img-fluid";
-        image.id = "cropper_image";
-        $("#cropper").prepend(image);
+        image.style.setProperty('display', 'block');
+        image.style.setProperty('max-width', '100%');
+        $("#img_container").prepend(image);
 
-        const cropper = new Cropper(image, {
+        $("#modal").modal('show');
+
+        var cropper = new Cropper(image, {
             aspectRatio: 1,
-            viewMode: 1,
             background: false,
             modal: false
         });
 
-        var myDropZone = this;
-
-        $("#cropperSave").click(function () {
+        $("#cropperSave").click(function (){
             var canvas = cropper.getCroppedCanvas({
                 width: 200,
                 height: 200
             });
 
-            // Turn the canvas into a Blob (file object without a name)
             canvas.toBlob(function (blob) {
-                // Update the image thumbnail with the new image data
-                myDropZone.createThumbnail(
+                myDropzone.createThumbnail(
                     blob,
                     myDropZone.options.thumbnailWidth,
                     myDropZone.options.thumbnailHeight,
                     myDropZone.options.thumbnailMethod,
                     false,
-                    function (dataURL) {
-
-                        // Update the Dropzone file thumbnail
+                    function(dataURL) {
                         myDropZone.emit('thumbnail', file, dataURL);
-
-                        // Return modified file to dropzone
                         done(blob);
                     }
                 );
             });
-            $("#modal").modal('hide');
+            $("#img_container").empty();
         });
-    },
-});
-
-$("#modal").on("hide.bs.modal", function (event) {
-    // TODO delete cropper
-    console.log('test');
+    }
 });

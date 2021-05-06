@@ -104,5 +104,7 @@
             </main>
         </div>
     </div>
-    {{ encore_entry_script_tags('dashboard') }}
+    {% block bottom_javascript %}
+        {{ encore_entry_script_tags('dashboard') }}
+    {% endblock %}
 {% endblock %}

@@ -34,4 +34,19 @@ class UploaderHelper
 
         return $filename;
     }
+
+    public function uploadModelImage(UploadedFile $uploadedFile): string
+    {
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+        $destination = $this->uploadsPath.'/tires_models';
+        $filename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
+
+        $uploadedFile->move(
+            $destination,
+            $filename
+        );
+
+        return $filename;
+    }
 }

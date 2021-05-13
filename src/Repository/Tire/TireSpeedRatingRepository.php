@@ -47,4 +47,8 @@ class TireSpeedRatingRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('speedRating' => 'ASC'));
+    }
 }

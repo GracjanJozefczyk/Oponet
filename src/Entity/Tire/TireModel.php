@@ -11,6 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TireModel
 {
+    const SEASONS = [
+        'Winter' => 'winter',
+        'Summer' => 'summer',
+        'All seasons' => 'all'
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,6 +50,11 @@ class TireModel
      * @ORM\JoinColumn(nullable=false)
      */
     private $vehicleType;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $imagesUrls = [];
 
     public function getId(): ?int
     {
@@ -106,6 +117,18 @@ class TireModel
     public function setVehicleType(?VehicleType $vehicleType): self
     {
         $this->vehicleType = $vehicleType;
+
+        return $this;
+    }
+
+    public function getImagesUrls(): ?array
+    {
+        return preg_filter('/^/', 'uploads/tires_models/', $this->imagesUrls);
+    }
+
+    public function setImagesUrls(?array $imagesUrls): self
+    {
+        $this->imagesUrls = $imagesUrls;
 
         return $this;
     }

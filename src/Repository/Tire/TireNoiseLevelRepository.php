@@ -47,4 +47,8 @@ class TireNoiseLevelRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('noiseLevel' => 'ASC'));
+    }
 }

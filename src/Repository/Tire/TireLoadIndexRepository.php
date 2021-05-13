@@ -47,4 +47,8 @@ class TireLoadIndexRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('kg' => 'ASC'));
+    }
 }

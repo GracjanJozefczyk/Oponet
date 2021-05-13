@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('dashboard', './assets/js/dashboard/dashboard.js')
     .addEntry('tire_brand_form', './assets/js/dashboard/tire_brand_form.js')
+    .addEntry('tire_model_form', './assets/js/dashboard/tire_model_form.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

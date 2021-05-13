@@ -6,9 +6,11 @@ use App\Repository\Tire\TireBrandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TireBrandRepository::class)
+ * @UniqueEntity("name")
  */
 class TireBrand
 {
@@ -113,5 +115,10 @@ class TireBrand
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

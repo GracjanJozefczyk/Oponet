@@ -4,9 +4,13 @@ namespace App\Entity\Tire;
 
 use App\Repository\Tire\TireSpeedRatingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TireSpeedRatingRepository::class)
+ * @UniqueEntity("speedRating")
+ * @UniqueEntity("kmh")
+ * @UniqueEntity("mph")
  */
 class TireSpeedRating
 {

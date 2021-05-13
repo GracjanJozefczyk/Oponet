@@ -9,7 +9,7 @@ import Cropper from "cropperjs";
 import 'cropperjs/dist/cropper.css';
 
 let simplemde = new SimpleMDE({
-    element: $('#tire_brand_form_description')[0],
+    element: $('#tire_model_form_description')[0],
     toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "link", "table", "|", "preview"]
 });
 
@@ -17,18 +17,20 @@ Dropzone.autoDiscover = false;
 
 let myDropzone = new Dropzone("#dropzone", {
     acceptedFiles: 'image/*',
-    maxFiles: 1,
     parallelUploads: 1,
     dictDefaultMessage: "Drop Brand Logo here...",
     addRemoveLinks: true,
     init: function () {
         this.on("success", function (file, response) {
-            $("#tire_brand_form_imageUrl").val(response.filename);
-            $("#old_brand_image").hide();
-            $("#modal").modal('hide');
+            console.log(file.upload.uuid);
+            var newWidget = $("#tire_model_form_imagesUrls").attr("data-prototype");
+            newWidget = newWidget.replace(/__name__/g, file.upload.uuid);
+            newWidget = newWidget.replace(/__data__/g, response.filename);
+            var form = $('form[name="tire_model_form"]');
+            form.append(newWidget);
         });
         this.on("removedfile", function (file) {
-            console.log(file);
+            var bla = $(`input[id*="${file.upload.uuid}"]`).remove();
         });
     },
     transformFile: function (file, done) {
@@ -68,6 +70,7 @@ let myDropzone = new Dropzone("#dropzone", {
                 );
             });
             $("#img_container").empty();
+            $("#modal").modal('hide');
         });
     }
 });

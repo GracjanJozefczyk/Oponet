@@ -1,0 +1,20 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}New Model{% endblock %}
+
+{% block content_header %}Add new model{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('tire_model_form') }}
+{% endblock %}
+
+{% block content %}
+    {{ include('admin/tires/models/_form.html.twig') }}
+
+    {% block bottom_javascript %}
+        {{ parent() }}
+        {{ encore_entry_script_tags('tire_model_form') }}
+    {% endblock %}
+
+{% endblock %}

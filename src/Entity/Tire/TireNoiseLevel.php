@@ -4,9 +4,11 @@ namespace App\Entity\Tire;
 
 use App\Repository\Tire\TireNoiseLevelRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TireNoiseLevelRepository::class)
+ * @UniqueEntity("noiseLevel")
  */
 class TireNoiseLevel
 {

@@ -47,4 +47,8 @@ class TireWetGripRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('wetGrip' => 'ASC'));
+    }
 }

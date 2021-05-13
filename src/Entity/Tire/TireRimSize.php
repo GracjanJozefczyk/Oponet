@@ -4,9 +4,11 @@ namespace App\Entity\Tire;
 
 use App\Repository\Tire\TireRimSizeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TireRimSizeRepository::class)
+ * @UniqueEntity("size")
  */
 class TireRimSize
 {

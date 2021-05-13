@@ -47,4 +47,8 @@ class TireFuelEfficiencyRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('fuelEfficiency' => 'ASC'));
+    }
 }

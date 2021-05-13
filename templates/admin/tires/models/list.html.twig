@@ -1,0 +1,97 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Models{% endblock %}
+
+{% block content_header %}Models{% endblock %}
+
+{% block content %}
+    <div class="row pt-3">
+
+        <div class="col-sm-3">
+            <div class="card text-primary border-primary mb-3 bg-light shadow">
+                <div class="card-header">
+                    <i class="bi bi-tags-fill mr-2"></i>
+                    TOTAL MODELS
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-outline-primary  btn-block" disabled>{{ models|length }}</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="card text-success border-success mb-3 bg-light shadow">
+                <div class="card-header">
+                    <i class="bi bi-plus-square mr-2"></i>
+                    NEW MODEL
+                </div>
+                <div class="card-body">
+                    <a href="{{ path('admin_tires_models_new') }}" class="btn btn-outline-success btn-block">ADD</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row pt-3">
+
+        <div class="col-12">
+            <div class="card text-dark border-dark mb-3 bg-light shadow">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="bi bi-list-check mr-2"></i>
+                        LIST OF MODELS
+                    </div>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                            <i class="bi bi-funnel"></i>
+                            Sort by
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-light table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 10%">Brand Image</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Vehicle Type</th>
+                            <th scope="col" style="width: 5%">Show</th>
+                            <th scope="col" style="width: 5%">Edit</th>
+                            <th scope="col" style="width: 5%">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for model in models %}
+                            <tr>
+                                <td class="align-middle">
+                                    <img src="{{ asset(model.brand.imageUrl) }}" style="width: 50px">
+                                </td>
+                                <td class="align-middle">{{ model.brand }}</td>
+                                <td class="align-middle">{{ model.name }}</td>
+                                <td class="align-middle">{{ model.vehicleType }}</td>
+                                <td class="align-middle">
+                                    <a class="btn btn-outline-success" href="#">
+                                        <i class="bi bi-search"></i>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a class="btn btn-outline-warning" href="{{ path('admin_tires_models_edit', { id: model.id }) }}">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a class="btn btn-outline-danger" href="#">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

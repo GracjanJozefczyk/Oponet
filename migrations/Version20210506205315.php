@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210504113255 extends AbstractMigration
+final class Version20210506205315 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,7 +23,7 @@ final class Version20210504113255 extends AbstractMigration
         $this->addSql('CREATE TABLE tire_brand (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, image_url VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tire_fuel_efficiency (id INT AUTO_INCREMENT NOT NULL, fuel_efficiency VARCHAR(10) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tire_height (id INT AUTO_INCREMENT NOT NULL, height INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE tire_load_index (id INT AUTO_INCREMENT NOT NULL, load_index VARCHAR(10) NOT NULL, kg INT NOT NULL, mph INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE tire_load_index (id INT AUTO_INCREMENT NOT NULL, load_index VARCHAR(10) NOT NULL, kg INT NOT NULL, lbs INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tire_model (id INT AUTO_INCREMENT NOT NULL, brand_id INT NOT NULL, vehicle_type_id INT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, season VARCHAR(255) NOT NULL, INDEX IDX_377CB02244F5D008 (brand_id), INDEX IDX_377CB022DA3FD1FC (vehicle_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tire_noise_level (id INT AUTO_INCREMENT NOT NULL, noise_level VARCHAR(10) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tire_product (id INT AUTO_INCREMENT NOT NULL, width_id INT NOT NULL, height_id INT NOT NULL, rim_size_id INT NOT NULL, load_index_id INT NOT NULL, speed_rating_id INT NOT NULL, noise_level_id INT NOT NULL, fuel_efficiency_id INT NOT NULL, wet_grip_id INT NOT NULL, price INT NOT NULL, quantity INT NOT NULL, year INT NOT NULL, run_on_flat TINYINT(1) NOT NULL, reinforced TINYINT(1) NOT NULL, INDEX IDX_51687FAE253C865B (width_id), INDEX IDX_51687FAE4679B87C (height_id), INDEX IDX_51687FAE15F085A4 (rim_size_id), INDEX IDX_51687FAEC4571803 (load_index_id), INDEX IDX_51687FAECD99B135 (speed_rating_id), INDEX IDX_51687FAECDF31B33 (noise_level_id), INDEX IDX_51687FAE7A457CCE (fuel_efficiency_id), INDEX IDX_51687FAEC4FF3D38 (wet_grip_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

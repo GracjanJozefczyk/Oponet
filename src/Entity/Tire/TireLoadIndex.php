@@ -4,9 +4,13 @@ namespace App\Entity\Tire;
 
 use App\Repository\Tire\TireLoadIndexRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TireLoadIndexRepository::class)
+ * @UniqueEntity("loadIndex")
+ * @UniqueEntity("kg")
+ * @UniqueEntity("lbs")
  */
 class TireLoadIndex
 {
@@ -30,7 +34,7 @@ class TireLoadIndex
     /**
      * @ORM\Column(type="integer")
      */
-    private $mph;
+    private $lbs;
 
     public function getId(): ?int
     {
@@ -61,14 +65,14 @@ class TireLoadIndex
         return $this;
     }
 
-    public function getMph(): ?int
+    public function getLbs(): ?int
     {
-        return $this->mph;
+        return $this->lbs;
     }
 
-    public function setMph(int $mph): self
+    public function setLbs(int $lbs): self
     {
-        $this->mph = $mph;
+        $this->lbs = $lbs;
 
         return $this;
     }

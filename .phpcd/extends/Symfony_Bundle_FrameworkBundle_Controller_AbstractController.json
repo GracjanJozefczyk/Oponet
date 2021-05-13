@@ -1,1 +1,1 @@
-["App\\Controller\\Admin\\Tires\\AdminTiresBrandsController","App\\Controller\\Admin\\Tires\\AdminTiresProductController","App\\Controller\\Admin\\Tires\\AdminTiresEULabelController"]
+["App\\Controller\\Admin\\Tires\\AdminTiresBrandsController","App\\Controller\\Admin\\Tires\\AdminTiresProductController","App\\Controller\\Admin\\Tires\\AdminTiresEULabelController","App\\Controller\\Admin\\Tires\\AdminTiresFeaturesController"]

@@ -19,6 +19,11 @@ class TireRimSizeRepository extends ServiceEntityRepository
         parent::__construct($registry, TireRimSize::class);
     }
 
+    public function findAllAndSort()
+    {
+        return $this->findBy(array(), array('size' => 'ASC'));
+    }
+
     // /**
     //  * @return TireRimSize[] Returns an array of TireRimSize objects
     //  */

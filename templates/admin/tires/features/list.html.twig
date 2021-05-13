@@ -5,80 +5,324 @@
 {% block content_header %}Features{% endblock %}
 
 {% block content %}
+{#-----EU LABEL-----#}
+    <div class="row row-cols-1 row-cols-md-3 pt-3">
 
-    <div class="card-deck pt-3">
-        <div class="card">
-            <div class="card-header">
-                <i class="bi bi-arrow-left-right"></i>
-                WIDTH
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-header">
+                    <i class="bi bi-droplet-half mr-2"></i>
+                    FUEL EFFICIENCY
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="{{ asset('images/dashboard/tire_fuel.png') }}" class="img-fluid">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                {% for fuel in tiresFuelEfficiency %}
+                                    <li class="list-group-item d-flex justify-content-around align-items-center">
+                                        {{ fuel.fuelEfficiency }}
+                                        <a href="{{ path('admin_tires_features_delete', { id: fuel.id, feature: 'TireFuelEfficiency' }) }}">
+                                            <i class="bi bi-trash-fill text-danger"></i>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(fuelEfficiencyForm) }}
+                        {{ form_row(fuelEfficiencyForm.fuelEfficiency) }}
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Add
+                        </button>
+                    {{ form_end(fuelEfficiencyForm) }}
+                </div>
             </div>
-            <img src="{{ asset('images/dashboard/tire_width.png') }}" class="card-img-top" alt="#">
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    {% for width in tiresWidth %}
-                        <li class="list-group-item d-flex justify-content-around align-items-center">
-                            {{ width.width }}
-                            <a href="{{ path('admin_tires_features_delete', { id: width.id, feature: 'width' }) }}">
-                                <i class="bi bi-trash-fill text-danger"></i>
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header">
+                    <i class="bi bi-cloud-drizzle-fill mr-2"></i>
+                    GRIP ON WET
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="{{ asset('images/dashboard/tire_wet.png') }}" class="img-fluid">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                {% for grip in tiresWetGrip %}
+                                    <li class="list-group-item d-flex justify-content-around align-items-center">
+                                        {{ grip.wetGrip }}
+                                        <a href="{{ path('admin_tires_features_delete', { id: grip.id, feature: 'TireWetGrip' }) }}">
+                                            <i class="bi bi-trash-fill text-danger"></i>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(wetGripForm) }}
+                        {{ form_row(wetGripForm.wetGrip) }}
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Add
+                        </button>
+                    {{ form_end(wetGripForm) }}
+                </div>
             </div>
-            <div class="card-footer">
-                {{ form_start(widthForm) }}
+        </div>
+
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-header">
+                    <i class="bi bi-megaphone-fill mr-2"></i>
+                    NOISE LEVEL
+                </div>
+                <img src="{{ asset('images/dashboard/tire_noise.png') }}" class="card-img-top" alt="#">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for noise in tiresNoiseLevel %}
+                            <li class="list-group-item d-flex justify-content-around align-items-center">
+                                {{ noise.noiseLevel }}
+                                <a href="{{ path('admin_tires_features_delete', { id: noise.id, feature: 'TireNoiseLevel' }) }}">
+                                    <i class="bi bi-trash-fill text-danger"></i>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(noiseLevelForm) }}
+                        {{ form_row(noiseLevelForm.noiseLevel) }}
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Add
+                        </button>
+                    {{ form_end(noiseLevelForm) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 pt-3">
+
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-header">
+                    <i class="bi bi-arrow-left-right mr-2"></i>
+                    WIDTH
+                </div>
+                <img src="{{ asset('images/dashboard/tire_width.png') }}" class="card-img-top" alt="#">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for width in tiresWidth %}
+                            <li class="list-group-item d-flex justify-content-around align-items-center">
+                                {{ width.width }}
+                                <a href="{{ path('admin_tires_features_delete', { id: width.id, feature: 'TireWidth' }) }}">
+                                    <i class="bi bi-trash-fill text-danger"></i>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(widthForm) }}
                     {{ form_row(widthForm.width) }}
                     <button type="submit" class="btn btn-success btn-block">
                         <i class="bi bi-check-circle-fill"></i>
                         Add
                     </button>
-                {{ form_end(widthForm) }}
+                    {{ form_end(widthForm) }}
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <i class="bi bi-arrow-down-up"></i>
-                HEIGHT
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-header">
+                    <i class="bi bi-arrow-down-up mr-2"></i>
+                    HEIGHT
+                </div>
+                <img src="{{ asset('images/dashboard/tire_height.png') }}" class="card-img-top" alt="#">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for height in tiresHeight %}
+                            <li class="list-group-item d-flex justify-content-around align-items-center">
+                                {{ height.height }}
+                                <a href="{{ path('admin_tires_features_delete', { id: height.id, feature: 'TireHeight' }) }}">
+                                    <i class="bi bi-trash-fill text-danger"></i>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(heightForm) }}
+                        {{ form_row(heightForm.height) }}
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Add
+                        </button>
+                    {{ form_end(heightForm) }}
+                </div>
             </div>
-            <img src="{{ asset('images/dashboard/tire_height.png') }}" class="card-img-top" alt="#">
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    {% for height in tiresHeight %}
-                        <li class="list-group-item d-flex justify-content-around align-items-center">
-                            {{ height.height }}
-                            <a href="{{ path('admin_tires_features_delete', { id: height.id, feature: 'height' }) }}">
-                                <i class="bi bi-trash-fill text-danger"></i>
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="card-footer">
-                {{ form_start(heightForm) }}
-                    {{ form_row(heightForm.height) }}
+        </div>
+
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-header">
+                    <i class="bi bi-arrows-angle-expand mr-2"></i>
+                    RIM
+                </div>
+                <img src="{{ asset('images/dashboard/tire_rim.png') }}" class="card-img-top" alt="#">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for size in tiresRimSize %}
+                            <li class="list-group-item d-flex justify-content-around align-items-center">
+                                {{ size.size }}
+                                <a href="{{ path('admin_tires_features_delete', { id: size.id, feature: 'TireRimSize' }) }}">
+                                    <i class="bi bi-trash-fill text-danger"></i>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(rimSizeForm) }}
+                    {{ form_row(rimSizeForm.size) }}
                     <button type="submit" class="btn btn-success btn-block">
                         <i class="bi bi-check-circle-fill"></i>
                         Add
                     </button>
-                {{ form_end(heightForm) }}
+                    {{ form_end(rimSizeForm) }}
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <i class="bi bi-arrows-angle-expand"></i>
-                RIM
-            </div>
-            <img src="{{ asset('images/dashboard/tire_rim.png') }}" class="card-img-top" alt="#">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is content</p>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">Last upd</small>
-            </div>
-        </div>
     </div>
 
+    <div class="row row-cols-1 row-cols-md-2 pt-3">
+
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-header">
+                    <i class="bi bi-download mr-2"></i>
+                    LOAD INDEX
+                </div>
+                <img src="{{ asset('images/dashboard/tire_load_index.png') }}" class="card-img-top" alt="#">
+                <div class="card-body">
+                    <table class="table" style="text-align: center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Index</th>
+                                <th scope="col">kg</th>
+                                <th scope="col">lbs</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for index in tiresLoadIndex %}
+                            <tr>
+                                <td>{{ index.loadIndex }}</td>
+                                <td>{{ index.kg }}</td>
+                                <td>{{ index.lbs }}</td>
+                                <td>
+                                    <a href="{{ path('admin_tires_features_delete', { id: index.id, feature: 'TireLoadIndex' }) }}">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(loadIndexForm) }}
+                        <div class="row">
+                            <div class="col">
+                                {{ form_row(loadIndexForm.loadIndex) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(loadIndexForm.kg) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(loadIndexForm.lbs) }}
+                            </div>
+                        </div>
+                    <button type="submit" class="btn btn-success btn-block">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Add
+                        </button>
+                    {{ form_end(loadIndexForm) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-header">
+                    <i class="bi bi-speedometer mr-2"></i>
+                    SPEED RATING
+                </div>
+                <img src="{{ asset('images/dashboard/tire_speed_rating.png') }}" class="card-img-top" alt="#">
+                <div class="card-body">
+                    <table class="table" style="text-align: center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Rating</th>
+                            <th scope="col">km/h</th>
+                            <th scope="col">mph</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for rating in tiresSpeedRating %}
+                            <tr>
+                                <td>{{ rating.speedRating }}</td>
+                                <td>{{ rating.kmh }}</td>
+                                <td>{{ rating.mph }}</td>
+                                <td>
+                                    <a href="{{ path('admin_tires_features_delete', { id: rating.id, feature: 'TireSpeedRating' }) }}">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    {{ form_start(speedRatingForm) }}
+                    <div class="row">
+                        <div class="col">
+                            {{ form_row(speedRatingForm.speedRating) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(speedRatingForm.kmh) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(speedRatingForm.mph) }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Add
+                    </button>
+                    {{ form_end(speedRatingForm) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

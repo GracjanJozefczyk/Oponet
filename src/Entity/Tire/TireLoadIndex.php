@@ -76,4 +76,9 @@ class TireLoadIndex
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getLoadIndex();
+    }
 }

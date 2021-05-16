@@ -4,7 +4,10 @@ namespace App\Entity\Tire;
 
 use App\Entity\Vehicle\VehicleType;
 use App\Repository\Tire\TireModelRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=TireModelRepository::class)
@@ -25,6 +28,13 @@ class TireModel
     private $id;
 
     /**
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\InversedRelativeSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="relationClass", value="App\Entity\Tire\TireProduct"),
+     *          @Gedmo\SlugHandlerOption(name="mappedBy", value="model"),
+     *          @Gedmo\SlugHandlerOption(name="inverseSlugField", value="slug")
+     *      })
+     * }, fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -55,6 +65,16 @@ class TireModel
      * @ORM\Column(type="array", nullable=true)
      */
     private $imagesUrls = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=TireProduct::class, mappedBy="model", orphanRemoval=true)
+     */
+    private $tireProducts;
+
+    public function __construct()
+    {
+        $this->tireProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -123,7 +143,7 @@ class TireModel
 
     public function getImagesUrls(): ?array
     {
-        return preg_filter('/^/', 'uploads/tires_models/', $this->imagesUrls);
+        return $this->imagesUrls;
     }
 
     public function setImagesUrls(?array $imagesUrls): self
@@ -131,5 +151,45 @@ class TireModel
         $this->imagesUrls = $imagesUrls;
 
         return $this;
+    }
+
+    public function getImagesPaths(): ?array
+    {
+        return preg_filter('/^/', 'uploads/tires_models/', $this->imagesUrls);
+    }
+
+    /**
+     * @return Collection|TireProduct[]
+     */
+    public function getTireProducts(): Collection
+    {
+        return $this->tireProducts;
+    }
+
+    public function addTireProduct(TireProduct $tireProduct): self
+    {
+        if (!$this->tireProducts->contains($tireProduct)) {
+            $this->tireProducts[] = $tireProduct;
+            $tireProduct->setModel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTireProduct(TireProduct $tireProduct): self
+    {
+        if ($this->tireProducts->removeElement($tireProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($tireProduct->getModel() === $this) {
+                $tireProduct->setModel(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

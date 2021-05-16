@@ -16,7 +16,66 @@
                 </div>
 
                 <div class="card-body">
-                    {{ form(productForm) }}
+                    {{ form_start(productForm) }}
+                        {{ form_row(productForm.model) }}
+                        <div class="form-row">
+                            <div class="col">
+                                {{ form_row(productForm.price) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.quantity) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.year) }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                {{ form_row(productForm.width) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.height) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.rimSize) }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                {{ form_row(productForm.loadIndex) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.speedRating) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.noiseLevel) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.fuelEfficiency) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(productForm.wetGrip) }}
+                            </div>
+                        </div>
+                        {{ form_row(productForm.reinforced) }}
+                        {{ form_row(productForm.runOnFlat) }}
+
+                        <div class="row pt-3">
+                            <div class="col-6">
+                                <a href="{{ path('admin_tires_products') }}" class="btn btn-warning btn-block">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                    Cancel
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-success btn-block">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    ADD
+                                </button>
+                            </div>
+                        </div>
+
+                    {{ form_end(productForm) }}
                 </div>
 
             </div>

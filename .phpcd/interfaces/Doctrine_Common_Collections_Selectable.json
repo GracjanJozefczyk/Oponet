@@ -1,1 +1,1 @@
-["App\\Repository\\Tire\\TireRimSizeRepository","App\\Repository\\Tire\\TireLoadIndexRepository"]
+["App\\Repository\\Tire\\TireRimSizeRepository","App\\Repository\\Tire\\TireLoadIndexRepository","App\\Repository\\Tire\\TireProductRepository"]

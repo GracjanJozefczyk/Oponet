@@ -5,6 +5,7 @@ namespace App\Service;
 
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Filesystem\Filesystem;
 
 class UploaderHelper
 {
@@ -48,5 +49,11 @@ class UploaderHelper
         );
 
         return $filename;
+    }
+
+    public function deleteModelImage(string $img)
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->uploadsPath.'/tires_models/'.$img);
     }
 }

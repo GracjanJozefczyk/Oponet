@@ -4,9 +4,15 @@ namespace App\Entity\Tire;
 
 use App\Repository\Tire\TireProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 
 /**
  * @ORM\Entity(repositoryClass=TireProductRepository::class)
+ * @UniqueEntity(
+ *     fields={"model", "price", "year", "width", "height", "rimSize", "loadIndex", "speedRating", "noiseLevel", "fuelEfficiency", "wetGrip"}
+ *     )
  */
 class TireProduct
 {
@@ -89,6 +95,37 @@ class TireProduct
      * @ORM\JoinColumn(nullable=false)
      */
     private $wetGrip;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TireModel::class, inversedBy="tireProducts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $model;
+
+    /**
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="relationField", value="model"),
+     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="name"),
+     *          @Gedmo\SlugHandlerOption(name="separator", value="-"),
+     *          @Gedmo\SlugHandlerOption(name="urilize", value=true)
+     *      }),
+     * }, separator="-", updatable=true, fields={"year"})
+     * @ORM\Column(length=64, unique=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -247,6 +284,54 @@ class TireProduct
     public function setWetGrip(?TireWetGrip $wetGrip): self
     {
         $this->wetGrip = $wetGrip;
+
+        return $this;
+    }
+
+    public function getModel(): ?TireModel
+    {
+        return $this->model;
+    }
+
+    public function setModel(?TireModel $model): self
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

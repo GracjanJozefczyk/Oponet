@@ -14,7 +14,7 @@
                     TOTAL PRODUCTS
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-outline-primary  btn-block" disabled>1</button>
+                    <button class="btn btn-outline-primary  btn-block" disabled>{{ products|length }}</button>
                 </div>
             </div>
         </div>
@@ -57,6 +57,7 @@
                             <th scope="col">Brand</th>
                             <th scope="col">Name</th>
                             <th scope="col">Size</th>
+                            <th scope="col">Symbol</th>
                             <th scope="col">Price</th>
                             <th scope="col">Year</th>
                             <th scope="col">Vehicle</th>
@@ -70,12 +71,15 @@
                         {% for product in products %}
                             <tr>
                                 <td class="align-middle">{{ product.id }}</td>
-                                <td class="align-middle">{{ product.family.brand }}</td>
-                                <td class="align-middle">{{ product.family.name }}</td>
-                                <td class="align-middle">{{ product.w }}/{{ product.h }}R{{ product.r }}</td>
+                                <td class="align-middle">{{ product.model.brand }}</td>
+                                <td class="align-middle">{{ product.model.name }}</td>
+                                <td class="align-middle">
+                                    {{ product.width }}/{{ product.height }} R{{ product.rimSize }} {% if product.reinforced %}XL{% endif %}
+                                </td>
+                                <td class="align-middle">{{ product.loadIndex }}{{ product.speedRating }}</td>
                                 <td class="align-middle">{{ product.price }}</td>
                                 <td class="align-middle">{{ product.year }}</td>
-                                <td class="align-middle">{{ product.family.vehicle }}</td>
+                                <td class="align-middle">{{ product.model.vehicleType }}</td>
                                 <td class="align-middle">{{ product.quantity }}</td>
                                 <td class="align-middle">
                                     <a class="btn btn-outline-success" href="#">
@@ -83,7 +87,7 @@
                                     </a>
                                 </td>
                                 <td class="align-middle">
-                                    <a class="btn btn-outline-warning" href="#">
+                                    <a class="btn btn-outline-warning" href="{{ path('admin_tires_products_edit', { id: product.id }) }}">
                                         <i class="bi bi-pencil-fill"></i>
                                     </a>
                                 </td>

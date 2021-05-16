@@ -56,13 +56,43 @@ class AdminTiresModelsController extends AbstractController
     /**
      * @Route("/admin/tires/models/{id}/edit", name="admin_tires_models_edit")
      */
-    public function edit(TireModel $tireModel)
+    public function edit(TireModel $model, EntityManagerInterface $em, Request $request)
     {
-        $form = $this->createForm(TireModelFormType::class, $tireModel);
+        $form = $this->createForm(TireModelFormType::class, $model);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($model);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_tires_models');
+        }
 
         return $this->render('admin/tires/models/edit.html.twig', [
             'modelForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/admin/tires/models/{id}/delete", name="admin_tires_models_delete")
+     */
+    public function delete(TireModel $model)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($model);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_tires_models');
+    }
+
+    /**
+     * @Route("/admin/tires/models/deleteImage/{img}", name="admin_tires_models_deleteImage")
+     */
+    public function deleteImage(string $img, UploaderHelper $uploaderHelper)
+    {
+        $uploaderHelper->deleteModelImage($img);
+
+        return $this->json(null, 200);
     }
 
     /**

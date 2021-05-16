@@ -1,4 +1,4 @@
-{% if modelForm.vars.data.imagesUrls is defined %}
+{% if (modelForm.vars.data.imagesPaths is defined) and (modelForm.vars.data.imagesPaths is not empty) %}
 <div class="row pt-3">
     <div class="col-12">
         <div class="card text-dark border-dark bg-light shadow">
@@ -7,9 +7,33 @@
                 MODEL'S IMAGES
             </div>
             <div class="card-body">
-                {% for image in modelForm.vars.data.imagesUrls %}
-                    <img src="{{ asset(image) }}" class="img-thumbnail shadow" style="width: 200px">
-                {% endfor %}
+
+                <div class="row">
+                    {% for image in modelForm.vars.data.imagesPaths %}
+                        <div class="col-2" id="{{ image }}">
+                            <div class="card shadow">
+                                <img src="{{ asset(image)|imagine_filter('thumb_medium') }}" class="img-fluid">
+                                <div class="card-footer bg-light">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button data-src="{{ image }}" class="btn btn-outline-danger btn-block delete-thumb">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="#" class="btn btn-outline-success btn-block">
+                                                <i class="bi bi-search"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -21,7 +45,7 @@
         <div class="card h-100 text-dark border-dark mb-3 bg-light shadow">
             <div class="card-header">
                 <i class="bi bi-plus-square mr-2"></i>
-                UPLOAD BRAND IMAGE
+                UPLOAD MODEL IMAGES
             </div>
             <div class="card-body">
                 <form class="dropzone p3" id="dropzone" action="{{ path('admin_tires_models_uploadImage') }}"></form>
@@ -35,7 +59,7 @@
         <div class="card text-dark border-dark mb-3 bg-light shadow">
             <div class="card-header">
                 <i class="bi bi-blockquote-left mr-2"></i>
-                BRAND DESCRIPTION
+                MODEL DESCRIPTION
             </div>
             <div class="card-body">
                 {{ form_start(modelForm) }}

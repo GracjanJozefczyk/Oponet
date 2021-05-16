@@ -19,6 +19,40 @@ class TireProductRepository extends ServiceEntityRepository
         parent::__construct($registry, TireProduct::class);
     }
 
+    public function findWidthsByRimSize($rimSize)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT DISTINCT tire_width.width, tire_width.id 
+            FROM tire_product
+            INNER JOIN tire_width
+            ON tire_product.width_id=tire_width.id
+            WHERE rim_size_id = :rimSize
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['rimSize' => $rimSize]);
+
+       return $stmt->fetchAllAssociative();
+    }
+
+    public function findHeightsByWidth($width)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT DISTINCT tire_height.height, tire_height.id 
+            FROM tire_product
+            INNER JOIN tire_height
+            ON tire_product.height_id=tire_height.id
+            WHERE width_id = :width
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['width' => $width]);
+
+        return $stmt->fetchAllAssociative();
+    }
+
     // /**
     //  * @return TireProduct[] Returns an array of TireProduct objects
     //  */

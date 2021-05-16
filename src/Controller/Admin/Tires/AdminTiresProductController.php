@@ -4,7 +4,8 @@
 namespace App\Controller\Admin\Tires;
 
 
-use App\Form\TireProductFormType;
+use App\Entity\Tire\TireProduct;
+use App\Form\Tires\TireProductFormType;
 use App\Repository\Tire\TireProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,18 +36,14 @@ class AdminTiresProductController extends AbstractController
         $form = $this->createForm(TireProductFormType::class);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $load = $form->getData();
-
-            // If identical product exists add quantity
-            if ($entity = $this->checkIfSameExists($tireProductRepository, $form)) {
-                $entity->setQuantity($entity->getQuantity() + $form['quantity']->getData());
-            } else {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $load = $form->getData();
                 $em->persist($load);
+            } elseif ($entity = $this->checkIfSameExists($tireProductRepository, $form)) {
+                $entity->setQuantity($entity->getQuantity() + $form['quantity']->getData());
             }
-
             $em->flush();
-
             return $this->redirectToRoute('admin_tires_products');
         }
         return $this->render('admin/tires/products/new.html.twig', [
@@ -57,8 +54,20 @@ class AdminTiresProductController extends AbstractController
     /**
      * @Route("/admin/tires/products/{id}/edit", name="admin_tires_products_edit")
      */
-    public function edit()
+    public function edit(TireProduct $product, EntityManagerInterface $em, Request $request)
     {
+        $form = $this->createForm(TireProductFormType::class, $product);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($product);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_tires_products');
+        }
+        return $this->render('admin/tires/products/edit.html.twig', [
+            'productForm' => $form->createView()
+        ]);
 
     }
 
@@ -79,14 +88,17 @@ class AdminTiresProductController extends AbstractController
     {
         return $tireProductRepository->findOneBy(
             [
-                'family' => $form['family']->getData(),
-                'speed' => $form['speed']->getData(),
-                'loadIndex' => $form['loadIndex']->getData(),
+                'model' => $form['model']->getData(),
                 'price' => $form['price']->getData(),
-                'w' => $form['w']->getData(),
-                'h' => $form['h']->getData(),
-                'r' => $form['r']->getData(),
                 'year' => $form['year']->getData(),
+                'width' => $form['width']->getData(),
+                'height' => $form['height']->getData(),
+                'rimSize' => $form['rimSize']->getData(),
+                'loadIndex' => $form['loadIndex']->getData(),
+                'speedRating' => $form['speedRating']->getData(),
+                'noiseLevel' => $form['noiseLevel']->getData(),
+                'fuelEfficiency' => $form['fuelEfficiency']->getData(),
+                'wetGrip' => $form['wetGrip']->getData(),
             ]
         );
     }

@@ -31,6 +31,8 @@ class TireModelFormType extends AbstractType
             ])
             ->add('imagesUrls', CollectionType::class, [
                 'entry_type' => HiddenType::class,
+                'allow_delete' => true,
+                'delete_empty' => true,
                 'required' => false,
                 'allow_add' => true,
                 'prototype' => true,

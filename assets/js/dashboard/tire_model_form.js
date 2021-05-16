@@ -51,10 +51,7 @@ let myDropzone = new Dropzone("#dropzone", {
         });
 
         $("#cropperSave").click(function (){
-            var canvas = cropper.getCroppedCanvas({
-                width: 800,
-                height: 800
-            });
+            var canvas = cropper.getCroppedCanvas();
 
             canvas.toBlob(function (blob) {
                 myDropzone.createThumbnail(
@@ -73,4 +70,19 @@ let myDropzone = new Dropzone("#dropzone", {
             $("#modal").modal('hide');
         });
     }
+});
+
+$(".delete-thumb").click(function (){
+    var oldStr = $(this).data('src');
+    var newStr = oldStr.replace("uploads/tires_models/", "");
+
+    $(`input[value*="${newStr}"]`).remove();
+    $(`div[id*="${newStr}"]`).fadeOut('slow');
+
+    $.ajax({
+        url: '/admin/tires/models/deleteImage/'+newStr,
+        method: 'DELETE'
+    }).done(function (data) {
+        console.log(data);
+    });
 });

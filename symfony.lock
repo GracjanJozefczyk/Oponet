@@ -100,6 +100,9 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "erusev/parsedown": {
+        "version": "1.7.4"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
@@ -108,6 +111,12 @@
     },
     "imagine/imagine": {
         "version": "1.2.4"
+    },
+    "knplabs/knp-components": {
+        "version": "v3.0.2"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.4.2"
     },
     "knplabs/knp-time-bundle": {
         "version": "v1.16.0"
@@ -560,6 +569,9 @@
     },
     "twig/extra-bundle": {
         "version": "v3.3.0"
+    },
+    "twig/markdown-extra": {
+        "version": "v3.3.1"
     },
     "twig/twig": {
         "version": "v3.3.0"

@@ -14,7 +14,7 @@
                     TOTAL PRODUCTS
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-outline-primary  btn-block" disabled>{{ products|length }}</button>
+                    <button class="btn btn-outline-primary  btn-block" disabled>{{ pagination.getTotalItemCount }}</button>
                 </div>
             </div>
         </div>
@@ -43,10 +43,16 @@
                         LIST OF PRODUCTS
                     </div>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-funnel"></i>
                             Sort by
                         </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ path('admin_tires_products', { orderBy: 'price' }) }}">
+                                <i class="bi bi-cash"></i>
+                                Price
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -68,7 +74,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for product in products %}
+                        {% for product in pagination %}
                             <tr>
                                 <td class="align-middle">{{ product.id }}</td>
                                 <td class="align-middle">{{ product.model.brand }}</td>
@@ -100,6 +106,10 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                </div>
+                <div class="card-footer">
+                    {{ knp_pagination_render(pagination) }}
+
                 </div>
             </div>
         </div>

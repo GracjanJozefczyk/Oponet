@@ -28,13 +28,6 @@ class TireModel
     private $id;
 
     /**
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\InversedRelativeSlugHandler", options={
-     *          @Gedmo\SlugHandlerOption(name="relationClass", value="App\Entity\Tire\TireProduct"),
-     *          @Gedmo\SlugHandlerOption(name="mappedBy", value="model"),
-     *          @Gedmo\SlugHandlerOption(name="inverseSlugField", value="slug")
-     *      })
-     * }, fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;

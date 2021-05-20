@@ -3,6 +3,8 @@
   padding-bottom: 3rem;
   margin-bottom: 0;
   background-color: #fff;
+  background-image: url("../../public/images/store/banner.jpg");
+  background-size: cover;
 }
 @media (min-width: 768px) {
   .jumbotron {

@@ -5,6 +5,7 @@ namespace App\Repository\Tire;
 use App\Entity\Tire\TireProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method TireProduct|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,21 +20,16 @@ class TireProductRepository extends ServiceEntityRepository
         parent::__construct($registry, TireProduct::class);
     }
 
-    public function findWidthsByRimSize($rimSize)
+    public function paginatorQuery($orderBy): QueryBuilder
     {
-        $conn = $this->getEntityManager()->getConnection();
+        if (!$orderBy) {
+            $orderBy = 'id';
+        }
 
-        $sql = '
-            SELECT DISTINCT tire_width.width, tire_width.id 
-            FROM tire_product
-            INNER JOIN tire_width
-            ON tire_product.width_id=tire_width.id
-            WHERE rim_size_id = :rimSize
-        ';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['rimSize' => $rimSize]);
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy("p.$orderBy", 'ASC');
 
-       return $stmt->fetchAllAssociative();
+        return $qb;
     }
 
     public function findHeightsByWidth($width)
@@ -46,11 +42,79 @@ class TireProductRepository extends ServiceEntityRepository
             INNER JOIN tire_height
             ON tire_product.height_id=tire_height.id
             WHERE width_id = :width
+            ORDER BY tire_height.height
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute(['width' => $width]);
 
+       return $stmt->fetchAllAssociative();
+    }
+
+    public function findRimByWidthAndHeight($width, $height)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT DISTINCT tire_rim_size.size, tire_rim_size.id 
+            FROM tire_product
+            INNER JOIN tire_rim_size
+            ON tire_product.rim_size_id=tire_rim_size.id
+            WHERE width_id = :width
+            AND height_id = :height
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['width' => $width, 'height' => $height]);
+
         return $stmt->fetchAllAssociative();
+    }
+
+    /**
+//     * @return TireProduct[] Returns an array of TireProduct objects
+     */
+    public function findByAny($width, $height, $rimSize, $seasons, $brands, $sort): QueryBuilder
+    {
+        $q = $this->createQueryBuilder('t');
+        $q->innerJoin('t.model', 'm');
+        $q->innerJoin('m.brand', 'b');
+
+       if ($width) {
+           $q->andWhere("t.width = $width");
+       }
+       if ($height) {
+           $q->andWhere("t.height = $height");
+       }
+       if ($rimSize) {
+           $q->andWhere("t.rimSize = $rimSize");
+       }
+       if ($seasons) {
+           if (count($seasons) > 1) {
+               $qr = "";
+               foreach ($seasons as $season) {
+                   $qr .= "m.season = '$season' OR ";
+               }
+               $qr = substr($qr, 0, -3);
+           } else {
+               $qr = "m.season = '$seasons[0]'";
+           }
+           $q->andWhere($qr);
+       }
+       if ($brands && $brands[0] != 'null') {
+           if (count($brands) > 1) {
+               $qry = "";
+               foreach ($brands as $brand) {
+                   $qry .= "b.id = $brand OR ";
+               }
+               $qry = substr($qry, 0, -3);
+           } else {
+               $qry = "b.id = $brands[0]";
+           }
+           $q->andWhere($qry);
+       }
+       if ($sort) {
+           $q->orderBy('t.price', 'ASC');
+       }
+
+        return $q;
     }
 
     // /**

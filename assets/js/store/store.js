@@ -1,30 +1,38 @@
 import '../../styles/store.css';
 import $ from "jquery";
 
-$("#srcRim").change(function () {
-    $.ajax({
-        url: '/api/getwidths/' + $(this).val(),
-        method: 'POST'
-    }).done(function (data) {
-        $("#srcWidth").empty();
-        data.forEach(car => {
-            $("#srcWidth").prepend(`<option value="${car['id']}">${car['width']}</option>`);
-            $("#srcWidth").prop("disabled", false);
-            console.log(car['width'], car['id']);
-        });
-    });
-});
+var $width = $("#srcWidth");
+var $height = $("#srcHeight");
+var $rim = $("#srcRim");
+var $brand = $("#srcBrand");
+var $season = $("#srcSeason");
+var placeholder = "<option>Choose</option>";
 
-$("#srcWidth").change(function () {
+$width.change(function () {
+    $height.empty().prop("disabled", true).prepend(placeholder);
+    $rim.empty().prop("disabled", true).prepend(placeholder);
     $.ajax({
         url: '/api/getheights/' + $(this).val(),
         method: 'POST'
     }).done(function (data) {
-        $("#srcHeight").empty();
-        data.forEach(car => {
-            $("#srcHeight").prepend(`<option value="${car['id']}">${car['height']}</option>`);
-            $("#srcHeight").prop("disabled", false);
-            console.log(car['height'], car['id']);
+        data.forEach(height => {
+            $height.append(`<option value="${height['id']}">${height['height']}</option>`).prop("disabled", false);
+        });
+    });
+});
+
+$height.change(function () {
+    $rim.empty().prop("disabled", true).prepend(placeholder);
+    $.ajax({
+        url: '/api/getrims/' + $width.val() + '/' + $(this).val(),
+        method: 'POST'
+    }).done(function (data) {
+        data.forEach(rim => {
+            $rim.append(`<option value="${rim['id']}">${rim['size']}</option>`).prop("disabled", false);
         })
     })
 })
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+});

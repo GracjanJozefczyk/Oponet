@@ -8,6 +8,7 @@ use App\Entity\Tire\TireProduct;
 use App\Form\Tires\TireProductFormType;
 use App\Repository\Tire\TireProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +19,17 @@ class AdminTiresProductController extends AbstractController
     /**
      * @Route("/admin/tires/products", name="admin_tires_products")
      */
-    public function list(TireProductRepository $tireProductRepository)
+    public function list(TireProductRepository $tireProductRepository, Request $request, PaginatorInterface $paginator)
     {
-        $products = $tireProductRepository->findAll();
+        $queryBuilder = $tireProductRepository->paginatorQuery($request->query->getAlnum('orderBy'));
+        $paginator = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('admin/tires/products/list.html.twig', [
-            'products' => $products
+            'pagination' => $paginator
         ]);
 
     }

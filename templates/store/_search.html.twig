@@ -1,0 +1,101 @@
+<section class="jumbotron text-center">
+    <div class="container-xl">
+        <div class="row">
+            <div class="col mb-4">
+                <h1 class="text-light font-weight-bold">Find your tires</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs nav-fill">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">By size</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">By car</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <form name="tires_search" action="{{ path('search') }}" method="get">
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label>Width</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <i class="input-group-text bi bi-arrow-left-right"></i>
+                                        </div>
+                                        <select name="width" id="srcWidth" class="form-control" required>
+                                            <option>Choose</option>
+                                            {% for width in widths %}
+                                                <option value="{{ width.id }}">{{ width }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <label>Height</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <i class="input-group-text bi bi-arrow-down-up"></i>
+                                        </div>
+                                        <select name="height" id="srcHeight" class="form-control" disabled>
+                                            <option>Choose</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <label>Rim Size</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <i class="input-group-text bi bi-arrows-angle-expand"></i>
+                                        </div>
+                                        <select name="rimSize" id="srcRim" class="form-control" disabled>
+                                            <option>Choose</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label>Season</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <i class="input-group-text bi bi-cloud-sun-fill"></i>
+                                        </div>
+                                        <select name="seasons[]" id="srcSeason" class="form-control" size="3" multiple>
+                                            <option value="summer" selected>Summer</option>
+                                            <option value="winter">Winter</option>
+                                            <option value="all">All Seasons</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <label>Brand</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <i class="input-group-text bi bi-tags-fill"></i>
+                                        </div>
+                                        <select name="brands[]" id="srcBrand" class="form-control" size="3" multiple>
+                                            <option value="null" selected>Any</option>
+                                            {% for brand in brands %}
+                                                <option value="{{ brand.id }}">{{ brand.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-block">
+                                <i class="bi bi-search"></i>
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

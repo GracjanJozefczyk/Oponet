@@ -37,7 +37,6 @@ class AdminTiresBrandsController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var TireBrand $brand */
             $brand = $form->getData();
 

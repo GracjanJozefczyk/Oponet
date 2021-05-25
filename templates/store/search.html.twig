@@ -15,11 +15,16 @@
 
         <div class="row">
             <div class="col">
+                {% if products|length < 1 %}
+                <div class="alert alert-danger" role="alert">
+                    We have not found any products matching your search, try again with other parameters
+                </div>
+                {% else %}
                 <div class="card text-dark mb-3 bg-light shadow">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
                             <i class="bi bi-list-check mr-2"></i>
-                            We have found <b>{{ products|length }}</b> products from <b>{{ minPrice }}</b> to <b>{{ maxPrice }}</b> zł
+                            We have found <b>{{ products.getTotalItemCount }}</b> products from <b>{{ minPrice }}</b> to <b>{{ maxPrice }}</b> zł
                         </div>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -86,6 +91,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
 
@@ -189,15 +195,17 @@
            {% endfor %}
         </div>
 
-        <div class="row">
-            <div class="col">
-                <div class="card text-dark mb-3 bg-light shadow">
-                    <div class="card-header d-flex justify-content-center align-items-center">
-                        {{ knp_pagination_render(products) }}
+        {% if knp_pagination_render(products) %}
+            <div class="row">
+                <div class="col">
+                    <div class="card text-dark mb-3 bg-light shadow">
+                        <div class="card-header d-flex justify-content-center align-items-center">
+                            {{ knp_pagination_render(products) }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
     </div>
 </div>

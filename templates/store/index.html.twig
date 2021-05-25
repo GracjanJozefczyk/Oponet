@@ -45,20 +45,47 @@
                     <img src="{{ asset('images/store/wheel.svg') }}" style="width: 30px">
                     <strong>ponet</strong>
                 </a>
-                <span>
-                    <button class="btn btn-outline-secondary" type="button">
-                        <i class="bi bi-sliders text-light px-3" style="font-size: 1.25rem"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" type="button">
-                        <i class="bi bi-cart2 text-light px-3" style="font-size: 1.25rem"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" type="button">
+                <div class="btn-group">
+                    {# USER #}
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-fill text-light px-3" style="font-size: 1.25rem"></i>
                     </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownUser">
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ path('show_profile') }}" class="dropdown-item">
+                                <i class="bi bi-person"></i>
+                                My account
+                            </a>
+                            <a href="{{ path('app_logout') }}" class="dropdown-item">
+                                <i class="bi bi-power"></i>
+                                Logout
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="dropdown-item">
+                                <i class="bi bi-door-open"></i>
+                                Login
+                            </a>
+                            <a href="{{ path('app_register') }}" class="dropdown-item">
+                                <i class="bi bi-pen"></i>
+                                Register
+                            </a>
+                        {% endif %}
+                    </div>
+                    {# CART #}
+                    <a href="#" class="btn btn-outline-secondary">
+                        <i class="bi bi-cart2 text-light px-3" style="font-size: 1.25rem"></i>
+                    </a>
+                    {# MENU #}
                     <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="bi bi-list text-light px-3" style="font-size: 1.25rem"></i>
                     </button>
-                </span>
+                    {# ADMIN #}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="btn btn-outline-secondary" href="{{ path('admin') }}">
+                            <i class="bi bi-sliders text-light px-3" style="font-size: 1.25rem"></i>
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </header>
@@ -72,9 +99,9 @@
     <footer class="text-muted">
         <div class="container">
             <p class="float-right">
-                <a href="#">Back to top</a>
+                <a href="#" id="scrollUp"><i class="bi bi-arrow-up-circle-fill text-dark" style="font-size: 2.5rem"></i></a>
             </p>
-            <p>Oponet&copy; is highly inspired by <a href="https://oponeo.pl" target="_blank">Oponeo.pl</a></p>
+            <p>Oponet&copy; is inspired by <a href="https://oponeo.pl" target="_blank">Oponeo.pl</a></p>
             <p>This site has educational purpose only!</p>
         </div>
     </footer>

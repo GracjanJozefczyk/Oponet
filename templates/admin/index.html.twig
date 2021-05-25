@@ -39,12 +39,32 @@
                     </ul>
 
                     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>USERS</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin_employees') %}active{% endif %}" href="{{ path('admin_employees') }}">
+                                <i class="bi bi-person-lines-fill"></i>
+                                Employees
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.pathInfo == path('admin_customers') %}active{% endif %}" href="{{ path('admin_customers') }}">
+                                <i class="bi bi-people-fill"></i>
+                                Customers
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>TIRES</span>
                     </h6>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link {% if app.request.pathInfo == path('admin_tires_features') %}active{% endif %}" href="{{ path('admin_tires_features') }}">
-                                <i class="bi bi-tags-fill"></i>
+                                <i class="bi bi-gear-fill"></i>
                                 Features
                             </a>
                         </li>
@@ -62,7 +82,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if app.request.pathInfo == path('admin_tires_products') %}active{% endif %}" href="{{ path('admin_tires_products') }}">
-                                <i class="bi bi-gear-wide"></i>
+                                <i class="bi bi-tag-fill"></i>
                                 Products
                             </a>
                         </li>

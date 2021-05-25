@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Tires;
 
 use App\Entity\Tire\TireProduct;
 use App\Form\Tires\TireProductFormType;
+use App\Repository\Tire\TireBrandRepository;
 use App\Repository\Tire\TireProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -16,6 +17,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminTiresProductController extends AbstractController
 {
+    /**
+     * @var TireProductRepository
+     */
+    private $tireProductRepository;
+
+    public function __construct(TireProductRepository $tireProductRepository)
+    {
+        $this->tireProductRepository = $tireProductRepository;
+    }
+
     /**
      * @Route("/admin/tires/products", name="admin_tires_products")
      */
@@ -37,16 +48,18 @@ class AdminTiresProductController extends AbstractController
     /**
      * @Route("/admin/tires/products/new", name="admin_tires_products_new")
      */
-    public function new(Request $request, EntityManagerInterface $em, TireProductRepository $tireProductRepository)
+    public function new(Request $request, EntityManagerInterface $em)
     {
         $form = $this->createForm(TireProductFormType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $load = $form->getData();
-                $em->persist($load);
-            } elseif ($entity = $this->checkIfSameExists($tireProductRepository, $form)) {
+                $product = $form->getData();
+                $em->persist($product);
+                $em->persist($product->setSlug($this->slugger($form)));
+            // If identical product exists - add quantity
+            } elseif ($entity = $this->checkIfSameExists($form)) {
                 $entity->setQuantity($entity->getQuantity() + $form['quantity']->getData());
             }
             $em->flush();
@@ -67,6 +80,7 @@ class AdminTiresProductController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($product);
+            $em->persist($product->setSlug($this->slugger($form)));
             $em->flush();
 
             return $this->redirectToRoute('admin_tires_products');
@@ -90,9 +104,9 @@ class AdminTiresProductController extends AbstractController
         return $this->redirectToRoute('admin_tires_products');
     }
 
-    private function checkIfSameExists(TireProductRepository $tireProductRepository, $form)
+    private function checkIfSameExists($form): TireProduct
     {
-        return $tireProductRepository->findOneBy(
+        return $this->tireProductRepository->findOneBy(
             [
                 'model' => $form['model']->getData(),
                 'price' => $form['price']->getData(),
@@ -108,5 +122,16 @@ class AdminTiresProductController extends AbstractController
             ]
         );
     }
-   
+
+    private function slugger($form): string
+    {
+        $data = $form->getViewData();
+        $model = $data->getModel()->getName();
+        $width = $data->getWidth();
+        $rimSize = $data->getRimSize();
+        $height = $data->getHeight();
+        $model = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $model);
+
+        return "$model-$width-$height-R$rimSize-".uniqid();
+    }
 }

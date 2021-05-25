@@ -1,0 +1,30 @@
+{% extends 'security/common.html.twig' %}
+
+{% block form %}
+    <h1 class="login-title">Register</h1>
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
+
+    <div class="row">
+        <div class="col-6">
+            <a href="{{ path('home') }}" class="btn btn-lg btn-warning btn-block">
+                Cancel
+            </a>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">
+                Register
+            </button>
+        </div>
+    </div>
+    {{ form_end(registrationForm) }}
+    <p class="login-wrapper-footer-text mt-2">Already have an account? <a href="{{ path('app_login') }}" class="text-reset">Login here</a></p>
+{% endblock %}

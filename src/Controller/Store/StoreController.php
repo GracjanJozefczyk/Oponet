@@ -50,17 +50,10 @@ class StoreController extends AbstractController
      */
     public function search(PaginatorInterface $paginator, TireBrandRepository $tireBrandRepository, TireWidthRepository $tireWidthRepository, TireProductRepository $tireProductRepository, Request $request)
     {
-        $products = $tireProductRepository->findByAny(
-            $request->query->getInt('width'),
-            $request->query->getInt('height'),
-            $request->query->getInt('rimSize'),
-            $request->query->get('seasons'),
-            $request->query->get('brands'),
-            $request->query->get('sort')
-        );
+        $query = $tireProductRepository->findByAny($request);
 
         $paginator = $paginator->paginate(
-            $products,
+            $query,
             $request->query->getInt('page', 1),
            9
         );
@@ -69,31 +62,9 @@ class StoreController extends AbstractController
             'products' => $paginator,
             'widths' => $tireWidthRepository->findAllAndSort(),
             'brands' => $tireBrandRepository->findAll(),
-            'minPrice' => $this->getLowestPrice($paginator->getItems()),
-            'maxPrice' => $this->getHighestPrice($paginator->getItems())
+            'minPrice' => $tireProductRepository->findByAny($request, 'min'),
+            'maxPrice' => $tireProductRepository->findByAny($request, 'max')
         ]);
-    }
-
-    private function getHighestPrice($products) {
-        $max = $products[0]->getPrice();
-        foreach ($products as $product) {
-            /* @var $product TireProduct */
-            if ($product->getPrice() > $max) {
-                $max = $product->getPrice();
-            }
-        }
-        return $max;
-    }
-
-    private function getLowestPrice($products) {
-        $min = $products[0]->getPrice();
-        foreach ($products as $product) {
-            /* @var $product TireProduct */
-            if ($product->getPrice() < $min) {
-                $min = $product->getPrice();
-            }
-        }
-        return $min;
     }
 
     /**

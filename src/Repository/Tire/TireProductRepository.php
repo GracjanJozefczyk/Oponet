@@ -4,8 +4,10 @@ namespace App\Repository\Tire;
 
 use App\Entity\Tire\TireProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method TireProduct|null find($id, $lockMode = null, $lockVersion = null)
@@ -69,10 +71,16 @@ class TireProductRepository extends ServiceEntityRepository
     }
 
     /**
-//     * @return TireProduct[] Returns an array of TireProduct objects
+     * @return QueryBuilder|[]
      */
-    public function findByAny($width, $height, $rimSize, $seasons, $brands, $sort): QueryBuilder
+    public function findByAny(Request $request, $expr = null)
     {
+        $width = $request->query->getInt('width');
+        $height = $request->query->getInt('height');
+        $rimSize = $request->query->getInt('rimSize');
+        $seasons = $request->query->get('seasons');
+        $brands = $request->query->get('brands');
+
         $q = $this->createQueryBuilder('t');
         $q->innerJoin('t.model', 'm');
         $q->innerJoin('m.brand', 'b');
@@ -110,11 +118,14 @@ class TireProductRepository extends ServiceEntityRepository
            }
            $q->andWhere($qry);
        }
-       if ($sort) {
-           $q->orderBy('t.price', 'ASC');
-       }
 
-        return $q;
+       if ($expr === 'max') {
+           return $q->select('MAX(t.price)')->getQuery()->getSingleScalarResult();
+       } elseif ($expr === 'min') {
+           return $q->select('MIN(t.price)')->getQuery()->getSingleScalarResult();
+       } else {
+           return $q;
+       }
     }
 
     // /**

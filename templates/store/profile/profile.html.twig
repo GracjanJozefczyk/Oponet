@@ -1,0 +1,50 @@
+{% extends 'store/index.html.twig' %}
+
+{% block content %}
+    <div class="container py-4">
+        <div class="row">
+            <div class="col">
+                <div class="card shadow mb-4">
+                    <div class="card-header">Profile info</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>First name</th>
+                                <td>{% if app.user.firstName is not null %}{{ app.user.firstName }}{% else %}<small class="text-muted">empty</small>{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Last name</th>
+                                <td>{% if app.user.lastName is not null %}{{ app.user.lastName }}{% else %}<small class="text-muted">empty</small>{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>e-mail</th>
+                                <td>{{ app.user.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone number</th>
+                                <td>{% if app.user.phone is not null %}{{ app.user.phone }}{% else %}<small class="text-muted">empty</small>{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Street</th>
+                                <td>{% if app.user.street is not null %}{{ app.user.street }}{% else %}<small class="text-muted">empty</small>{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>House number</th>
+                                <td>{% if app.user.house is not null %}{{ app.user.house }}{% else %}<small class="text-muted">empty</small>{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>City</th>
+                                <td>{% if app.user.city is not null %}{{ app.user.city }}{% else %}<small class="text-muted">empty</small>{% endif %}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex flex-row-reverse">
+                            <a href="{{ path('edit_profile', { id: app.user.id }) }}" class="btn btn-primary">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -103,14 +103,6 @@ class TireProduct
     private $model;
 
     /**
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
-     *          @Gedmo\SlugHandlerOption(name="relationField", value="model"),
-     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="name"),
-     *          @Gedmo\SlugHandlerOption(name="separator", value="-"),
-     *          @Gedmo\SlugHandlerOption(name="urilize", value=true)
-     *      }),
-     * }, separator="-", updatable=true, fields={"year"})
      * @ORM\Column(length=64, unique=true)
      */
     private $slug;

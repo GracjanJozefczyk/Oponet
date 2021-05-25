@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('security') }}
+{% endblock %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 login-section-wrapper">
+                <div class="brand-wrapper">
+                    <img src="#">
+                </div>
+                <div class="login-wrapper my-auto">
+                    {% block form %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col-sm-6 px-0 d-none d-sm-block">
+                <img src="{{ asset('images/store/banner.jpg') }}" class="login-img">
+                <p class="text-white font-weight-medium text-center flex-grow align-self-end footer-link">
+                    Oponet &copy;
+                </p>
+            </div>
+        </div>
+    </div>
+    {% block bottom_javascript %}
+        {{ encore_entry_script_tags('security') }}
+    {% endblock %}
+{% endblock %}

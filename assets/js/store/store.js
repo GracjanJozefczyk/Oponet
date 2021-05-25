@@ -8,6 +8,11 @@ var $brand = $("#srcBrand");
 var $season = $("#srcSeason");
 var placeholder = "<option>Choose</option>";
 
+$("#scrollUp").click(function (event) {
+    event.preventDefault();
+    window.scrollTo(0,0);
+});
+
 $width.change(function () {
     $height.empty().prop("disabled", true).prepend(placeholder);
     $rim.empty().prop("disabled", true).prepend(placeholder);

@@ -19,6 +19,11 @@ class TireBrandRepository extends ServiceEntityRepository
         parent::__construct($registry, TireBrand::class);
     }
 
+    public function getFirst()
+    {
+        return $this->findOneBy([], []);
+    }
+
     // /**
     //  * @return TireBrand[] Returns an array of TireBrand objects
     //  */

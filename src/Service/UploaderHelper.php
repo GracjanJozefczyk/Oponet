@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -15,10 +16,15 @@ class UploaderHelper
      * @var string
      */
     private $uploadsPath;
+    /**
+     * @var string
+     */
+    private $environment;
 
-    public function __construct(string $uploadsPath)
+    public function __construct(string $uploadsPath, ParameterBagInterface $params)
     {
         $this->uploadsPath = $uploadsPath;
+        $this->environment = $params->get('kernel.environment');
     }
 
     public function uploadBrandImage(UploadedFile $uploadedFile): string
@@ -28,10 +34,12 @@ class UploaderHelper
         $destination = $this->uploadsPath.'/tires_brands';
         $filename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
 
-        $uploadedFile->move(
-            $destination,
-            $filename
-        );
+        if ($this->environment !== 'test') {
+            $uploadedFile->move(
+                $destination,
+                $filename
+            );
+        }
 
         return $filename;
     }

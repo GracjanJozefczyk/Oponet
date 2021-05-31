@@ -4,7 +4,6 @@ namespace App\Repository\Tire;
 
 use App\Entity\Tire\TireProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,13 +27,11 @@ class TireProductRepository extends ServiceEntityRepository
             $orderBy = 'id';
         }
 
-        $qb = $this->createQueryBuilder('p')
+        return $this->createQueryBuilder('p')
             ->orderBy("p.$orderBy", 'ASC');
-
-        return $qb;
     }
 
-    public function findHeightsByWidth($width)
+    public function findHeightsByWidth($width): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
@@ -52,7 +49,7 @@ class TireProductRepository extends ServiceEntityRepository
        return $stmt->fetchAllAssociative();
     }
 
-    public function findRimByWidthAndHeight($width, $height)
+    public function findRimByWidthAndHeight($width, $height): array
     {
         $conn = $this->getEntityManager()->getConnection();
 

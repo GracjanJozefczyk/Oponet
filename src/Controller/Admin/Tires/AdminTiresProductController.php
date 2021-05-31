@@ -6,12 +6,12 @@ namespace App\Controller\Admin\Tires;
 
 use App\Entity\Tire\TireProduct;
 use App\Form\Tires\TireProductFormType;
-use App\Repository\Tire\TireBrandRepository;
 use App\Repository\Tire\TireProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,47 +22,58 @@ class AdminTiresProductController extends AbstractController
      */
     private $tireProductRepository;
 
-    public function __construct(TireProductRepository $tireProductRepository)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    /**
+     * @var Request
+     */
+    private $request;
+
+    public function __construct(TireProductRepository $tireProductRepository, EntityManagerInterface $em, RequestStack $requestStack)
     {
         $this->tireProductRepository = $tireProductRepository;
+        $this->em = $em;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     /**
      * @Route("/admin/tires/products", name="admin_tires_products")
      */
-    public function list(TireProductRepository $tireProductRepository, Request $request, PaginatorInterface $paginator)
+    public function list(PaginatorInterface $paginator): Response
     {
-        $queryBuilder = $tireProductRepository->paginatorQuery($request->query->getAlnum('orderBy'));
+        $queryBuilder = $this->tireProductRepository->paginatorQuery($this->request->query->getAlnum('orderBy'));
         $paginator = $paginator->paginate(
             $queryBuilder,
-            $request->query->getInt('page', 1),
+            $this->request->query->getInt('page', 1),
             10
         );
 
         return $this->render('admin/tires/products/list.html.twig', [
             'pagination' => $paginator
         ]);
-
     }
 
     /**
      * @Route("/admin/tires/products/new", name="admin_tires_products_new")
      */
-    public function new(Request $request, EntityManagerInterface $em)
+    public function new(): Response
     {
         $form = $this->createForm(TireProductFormType::class);
 
-        $form->handleRequest($request);
+        $form->handleRequest($this->request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $product = $form->getData();
-                $em->persist($product);
-                $em->persist($product->setSlug($this->slugger($form)));
+                $this->em->persist($product);
+                $this->em->persist($product->setSlug($this->slugger($form)));
             // If identical product exists - add quantity
             } elseif ($entity = $this->checkIfSameExists($form)) {
                 $entity->setQuantity($entity->getQuantity() + $form['quantity']->getData());
             }
-            $em->flush();
+            $this->em->flush();
             return $this->redirectToRoute('admin_tires_products');
         }
         return $this->render('admin/tires/products/new.html.twig', [
@@ -73,33 +84,31 @@ class AdminTiresProductController extends AbstractController
     /**
      * @Route("/admin/tires/products/{id}/edit", name="admin_tires_products_edit")
      */
-    public function edit(TireProduct $product, EntityManagerInterface $em, Request $request)
+    public function edit(TireProduct $product): Response
     {
         $form = $this->createForm(TireProductFormType::class, $product);
 
-        $form->handleRequest($request);
+        $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($product);
-            $em->persist($product->setSlug($this->slugger($form)));
-            $em->flush();
+            $this->em->persist($product);
+            $this->em->persist($product->setSlug($this->slugger($form)));
+            $this->em->flush();
 
             return $this->redirectToRoute('admin_tires_products');
         }
         return $this->render('admin/tires/products/edit.html.twig', [
             'productForm' => $form->createView()
         ]);
-
     }
 
     /**
      * @Route("/admin/tires/products/{id}/delete", name="admin_tires_products_delete")
      */
-    public function delete(int $id, TireProductRepository $tireProductRepository): Response
+    public function delete(int $id): Response
     {
-        $tire = $tireProductRepository->find($id);
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($tire);
-        $em->flush();
+        $tire = $this->tireProductRepository->find($id);
+        $this->em->remove($tire);
+        $this->em->flush();
 
         return $this->redirectToRoute('admin_tires_products');
     }

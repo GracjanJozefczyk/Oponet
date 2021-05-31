@@ -48,7 +48,7 @@
                 <div class="btn-group">
                     {# USER #}
                     <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="bi bi-person-fill text-light px-3" style="font-size: 1.25rem"></i>
+                        <i class="bi bi-person-fill text-light px-3 menu-icon"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownUser">
                         {% if is_granted('ROLE_USER') %}
@@ -72,17 +72,20 @@
                         {% endif %}
                     </div>
                     {# CART #}
-                    <a href="#" class="btn btn-outline-secondary">
-                        <i class="bi bi-cart2 text-light px-3" style="font-size: 1.25rem"></i>
+                    <a href="{{ path('cart') }}" class="btn btn-outline-secondary position-relative">
+                        <i class="bi bi-cart2 text-light px-3 menu-icon"></i>
+                        {% if cart_manager.currentCart.itemsCount > 0 %}
+                            <span class="position-absolute badge badge-danger cart-badge">{{ cart_manager.currentCart.itemsCount }}</span>
+                        {% endif %}
                     </a>
                     {# MENU #}
                     <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="bi bi-list text-light px-3" style="font-size: 1.25rem"></i>
+                        <i class="bi bi-list text-light px-3 menu-icon"></i>
                     </button>
                     {# ADMIN #}
                     {% if is_granted('ROLE_ADMIN') %}
                         <a class="btn btn-outline-secondary" href="{{ path('admin') }}">
-                            <i class="bi bi-sliders text-light px-3" style="font-size: 1.25rem"></i>
+                            <i class="bi bi-sliders text-light px-3 menu-icon"></i>
                         </a>
                     {% endif %}
                 </div>

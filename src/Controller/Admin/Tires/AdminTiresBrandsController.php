@@ -13,11 +13,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * @IsGranted("ROLE_MANAGER")
+ */
 class AdminTiresBrandsController extends AbstractController
 {
     /**
-     * @Route("/admin/tires/brands", name="admin_tires_brands")
+     * @Route("/admin/tires/brands", name="admin_tires_brands", methods={"GET"})
      */
     public function list(TireBrandRepository $tireBrandRepository): Response
     {
@@ -29,7 +33,7 @@ class AdminTiresBrandsController extends AbstractController
     }
 
     /**
-     * @Route("/admin/tires/brands/new", name="admin_tires_brands_new")
+     * @Route("/admin/tires/brands/new", name="admin_tires_brands_new", methods={"GET", "POST"})
      */
     public function new(EntityManagerInterface $em, Request $request): Response
     {
@@ -51,7 +55,7 @@ class AdminTiresBrandsController extends AbstractController
     }
 
     /**
-     * @Route("/admin/tires/brands/{id}/edit", name="admin_tires_brands_edit")
+     * @Route("/admin/tires/brands/{id}/edit", name="admin_tires_brands_edit", methods={"GET", "POST"})
      */
     public function edit(TireBrand $brand, EntityManagerInterface $em, Request $request): Response
     {
@@ -72,7 +76,7 @@ class AdminTiresBrandsController extends AbstractController
     }
 
     /**
-     * @Route("/admin/tires/brands/{id}/delete", name="admin_tires_brands_delete")
+     * @Route("/admin/tires/brands/{id}/delete", name="admin_tires_brands_delete", methods={"DELETE"})
      */
     public function delete(int $id, TireBrandRepository $tireBrandRepository): Response
     {
@@ -85,7 +89,7 @@ class AdminTiresBrandsController extends AbstractController
     }
 
     /**
-     * @Route("/admin/tires/brands/uploadImage", name="admin_tires_brands_uploadImage")
+     * @Route("/admin/tires/brands/uploadImage", name="admin_tires_brands_uploadImage", methods={"POST"})
      */
     public function uploadImage(Request $request, UploaderHelper $uploaderHelper): Response
     {
@@ -94,8 +98,10 @@ class AdminTiresBrandsController extends AbstractController
 
         if ($uploadedFile) {
             $filename = $uploaderHelper->uploadBrandImage($uploadedFile);
+            return $this->json(['filename' => $filename], 201);
+        } else {
+            return $this->json(null, 204);
         }
-        return $this->json(['filename' => $filename], 200);
     }
 
 }

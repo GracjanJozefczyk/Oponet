@@ -165,7 +165,16 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <a href="#" class="btn btn-primary btn-block">Buy</a>
+                        {{ form_start(form) }}
+                            {{ form_row(form.quantity, {
+                                'attr': {
+                                    'min': 1,
+                                    'max': (product.quantity),
+                                    'value': 1
+                                }
+                            }) }}
+                            <input type="submit" class="btn btn-primary btn-block" value="Add to cart">
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>

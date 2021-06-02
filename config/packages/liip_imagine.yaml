@@ -1,9 +1,21 @@
 liip_imagine:
     driver: "gd"
     filter_sets:
-        thumb_medium:
+        thumb_100:
+            filters:
+                thumbnail:
+                    size: [100, 100]
+                    mode: outbound
+                    allow_upscale: true
+        thumb_200:
             filters:
                 thumbnail:
                     size: [200, 200]
+                    mode: outbound
+                    allow_upscale: true
+        thumb_400:
+            filters:
+                thumbnail:
+                    size: [400, 400]
                     mode: outbound
                     allow_upscale: true

@@ -9,6 +9,7 @@ use App\Form\Tires\TireModelFormType;
 use App\Repository\Tire\TireModelRepository;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +21,14 @@ class AdminTiresModelsController extends AbstractController
     /**
      * @Route("/admin/tires/models", name="admin_tires_models")
      */
-    public function list(TireModelRepository $tireModelRepository)
+    public function list(TireModelRepository $tireModelRepository, PaginatorInterface $paginator, Request $request)
     {
-        $models = $tireModelRepository->findAll();
+        $queryBuilder = $tireModelRepository->paginatorQuery($request->query->getAlnum('orderBy'), $request->query->get('brand'), $request->query->get('model'));
+        $models = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('admin/tires/models/list.html.twig', [
             'models' => $models
@@ -43,6 +49,7 @@ class AdminTiresModelsController extends AbstractController
             $model = $form->getData();
 
             $em->persist($model);
+            $em->persist($model->setSlug($this->slugger($form)));
             $em->flush();
 
             return $this->redirectToRoute('admin_tires_models');
@@ -63,6 +70,7 @@ class AdminTiresModelsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($model);
+            $em->persist($model->setSlug($this->slugger($form)));
             $em->flush();
 
             return $this->redirectToRoute('admin_tires_models');
@@ -109,4 +117,10 @@ class AdminTiresModelsController extends AbstractController
         return $this->json(['filename' => $filename], 200);
     }
 
+    private function slugger($form): string
+    {
+        $data = $form->getViewData();
+        $name = $data->getName();
+        return transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $name);
+    }
 }

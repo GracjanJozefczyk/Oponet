@@ -4,6 +4,7 @@ namespace App\Repository\Tire;
 
 use App\Entity\Tire\TireBrand;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,9 +20,42 @@ class TireBrandRepository extends ServiceEntityRepository
         parent::__construct($registry, TireBrand::class);
     }
 
+    public function paginatorQuery($orderBy, $name): QueryBuilder
+    {
+        if (!$orderBy) {
+            $orderBy = 'id';
+        }
+
+        $q = $this->createQueryBuilder('b')
+            ->orderBy("b.$orderBy", 'ASC');
+
+        if ($name) {
+            $q->andWhere('b.name LIKE :name');
+            $q->setParameter('name', '%'.$name.'%');
+        }
+
+        return $q;
+    }
+
     public function getFirst()
     {
         return $this->findOneBy([], []);
+    }
+
+    public function autocomplete($string): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT DISTINCT name
+            FROM tire_brand
+            WHERE name LIKE :string
+            ORDER BY name
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['string' => '%'.$string.'%']);
+
+        return $stmt->fetchAllAssociative();
     }
 
     // /**

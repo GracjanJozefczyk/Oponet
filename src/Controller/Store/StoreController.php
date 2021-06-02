@@ -5,6 +5,7 @@ namespace App\Controller\Store;
 
 
 use App\Entity\Order\OrderItem;
+use App\Entity\Tire\TireBrand;
 use App\Entity\Tire\TireProduct;
 use App\Form\Order\AddToCartType;
 use App\Manager\CartManager;
@@ -33,34 +34,6 @@ class StoreController extends AbstractController
             'models' => $models,
             'widths' => $widths,
             'brands' => $brands
-        ]);
-    }
-
-    /**
-     * @Route("/show-product/{slug}", name="show_product")
-     */
-    public function showProduct(TireProduct $product, Request $request, CartManager $cartManager)
-    {
-        $form = $this->createForm(AddToCartType::class);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var OrderItem $item */
-            $item = $form->getData();
-            $item->setTireProduct($product);
-
-            $cart = $cartManager->getCurrentCart();
-            $cart->addItem($item);
-
-            $cartManager->save($cart);
-
-            return $this->redirectToRoute('cart');
-        }
-
-        return $this->render('store/show.html.twig', [
-            'product' => $product,
-            'form' => $form->createView()
         ]);
     }
 

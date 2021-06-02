@@ -4,6 +4,11 @@
 
 {% block content_header %}Brands{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('tire_brand_list') }}
+{% endblock %}
+
 {% block content %}
     <div class="row pt-3">
 
@@ -14,7 +19,26 @@
                     TOTAL BRANDS
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-outline-primary  btn-block" disabled>{{ brands|length }}</button>
+                    <button class="btn btn-outline-primary  btn-block" disabled>{{ brands.getTotalItemCount }}</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="card text-info border-info mb-3 bg-light shadow">
+                <div class="card-header">
+                    <i class="bi bi-search mr-2"></i>
+                    FIND BRAND
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="brand" id="find_brand" placeholder="Name...">
+                            <div class="input-group-append">
+                                <button class="btn btn-info"><i class="bi bi-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -43,18 +67,45 @@
                         LIST OF BRANDS
                     </div>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-funnel"></i>
-                            Sort by
+                            {% if brands.isSorted('b.name') %}
+                                Brand
+                            {% else %}
+                                Sort by
+                            {% endif %}
                         </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="d-flex flex-column ml-2">
+                                    <i class="bi bi-tag-fill"></i>
+                                </div>
+                                <div class="d-flex flex-column ml-2">
+                                    {{ knp_pagination_sortable(brands, 'Brand A-Z', 'b.name', {'sort': 'b.name', 'direction' : 'asc', 'class' : 'text-dark' }) }}
+                                </div>
+                                <div class="d-flex flex-column mr-2 ml-auto">
+                                    <i class="bi bi-sort-alpha-down"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="d-flex flex-column ml-2">
+                                    <i class="bi bi-tag-fill"></i>
+                                </div>
+                                <div class="d-flex flex-column ml-2">
+                                    {{ knp_pagination_sortable(brands, 'Brand Z-A', 'b.name', {'sort': 'b.name', 'direction' : 'desc', 'class' : 'text-dark' }) }}
+                                </div>
+                                <div class="d-flex flex-column mr-2 ml-auto">
+                                    <i class="bi bi-sort-alpha-down-alt"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-light table-striped">
                         <thead>
-                            <tr>
-                                <th scope="col" style="width: 2%">#</th>
-                                <th scope="col">Name</th>
+                        <tr>
+                            <th scope="col">Name</th>
                                 <th scope="col">Image</th>
                                 <th scope="col" style="width: 5%">Show</th>
                                 <th scope="col" style="width: 5%">Edit</th>
@@ -64,13 +115,12 @@
                         <tbody>
                         {% for brand in brands %}
                             <tr>
-                                <td class="align-middle">{{ brand.id }}</td>
                                 <td class="align-middle">{{ brand.name }}</td>
                                 <td class="align-middle">
-                                    <img src="{{ asset(brand.imageUrl) }}" style="width: 50px">
+                                    <img src="{{ asset(brand.imageUrl)|imagine_filter('thumb_100') }}" style="width: 50px" alt="{{ brand.name }}">
                                 </td>
                                 <td class="align-middle">
-                                    <a class="btn btn-outline-success" href="#">
+                                    <a class="btn btn-outline-success" href="{{ path('show_brand', { slug: brand.slug }) }}">
                                         <i class="bi bi-search"></i>
                                     </a>
                                 </td>
@@ -92,7 +142,16 @@
                         </tbody>
                     </table>
                 </div>
+                {% if knp_pagination_render(brands) %}
+                    <div class="card-footer d-flex justify-content-center align-items-center">
+                        {{ knp_pagination_render(brands) }}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
+    {% block bottom_javascript %}
+        {{ parent() }}
+        {{ encore_entry_script_tags('tire_brand_list') }}
+    {% endblock %}
 {% endblock %}

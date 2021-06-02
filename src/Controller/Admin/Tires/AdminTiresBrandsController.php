@@ -8,6 +8,7 @@ use App\Form\Tires\TireBrandFormType;
 use App\Repository\Tire\TireBrandRepository;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,9 +24,14 @@ class AdminTiresBrandsController extends AbstractController
     /**
      * @Route("/admin/tires/brands", name="admin_tires_brands", methods={"GET"})
      */
-    public function list(TireBrandRepository $tireBrandRepository): Response
+    public function list(TireBrandRepository $tireBrandRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        $brands = $tireBrandRepository->findAll();
+        $queryBuilder = $tireBrandRepository->paginatorQuery($request->query->getAlnum('orderBy'), $request->query->getAlnum('brand'));
+        $brands = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('admin/tires/brands/list.html.twig', [
             'brands' => $brands
@@ -45,6 +51,7 @@ class AdminTiresBrandsController extends AbstractController
             $brand = $form->getData();
 
             $em->persist($brand);
+            $em->persist($brand->setSlug($this->slugger($form)));
             $em->flush();
 
             return $this->redirectToRoute('admin_tires_brands');
@@ -65,6 +72,7 @@ class AdminTiresBrandsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em->persist($brand);
+            $em->persist($brand->setSlug($this->slugger($form)));
             $em->flush();
 
             return $this->redirectToRoute('admin_tires_brands');
@@ -104,4 +112,10 @@ class AdminTiresBrandsController extends AbstractController
         }
     }
 
+    private function slugger($form): string
+    {
+        $data = $form->getViewData();
+        $name = $data->getName();
+        return transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $name);
+    }
 }

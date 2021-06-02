@@ -1,0 +1,122 @@
+{% extends 'store/index.html.twig' %}
+
+{% block content %}
+<div class="album py-3 bg-light">
+    <div class="container">
+        {# Breadcrumb #}
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light">
+                <li class="breadcrumb-item" aria-current="page"><a href="{{ path('home') }}">Oponet</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{{ path('show_brand', { slug: product.model.brand.slug }) }}">{{ product.model.brand.name }}</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{{ path('show_model', { slug: product.model.slug }) }}">{{ product.model.name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ product.width }}/{{ product.height }} R{{ product.rimSize }} {{ product.loadIndex }}{{ product.speedRating }}</li>
+            </ol>
+        </nav>
+        {# Brand description #}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-md-3">
+                            <img src="{{ asset(product.model.brand.imageUrl) }}" class="img-fluid">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                {{ product.model.brand.description|markdown_to_html }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{# Product description #}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-md-3">
+                            <div class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% for image in product.model.imagesPaths %}
+                                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                            <img src="{{ asset(image) }}" class="d-block w-100">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                {{ product.model.description|markdown_to_html }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{# Buy product #}
+        <div class="row">
+            <div class="col">
+                <div class="card shadow">
+                    <div class="row no-gutters">
+                        <div class="col-4">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.model.brand }}</h5>
+                                <p class="card-text">{{ product.model }}</p>
+                                <p class="card-text"><small class="text-muted">{{ product.width }}/{{ product.height }} R{{ product.rimSize }} {{ product.loadIndex }}{{ product.speedRating }}</small></p>
+                            </div>
+                        <div class="col-4">
+
+                        </div>
+                        <div class="col-4">
+
+                        </div>
+                    </div>
+                    {#                    <div class="card-body">#}
+{#                        <div class="row align-items-center">#}
+{#                            <div class="col-4">#}
+{#                                <h5 class="card-title">#}
+{#                                    Price:#}
+{#                                </h5>#}
+{#                                <span class="card-text">#}
+{#                                    {{ product.price }} zł / pcs#}
+{#                                </span>#}
+{#                            </div>#}
+{#                            <div class="col-4">#}
+{#                                <h5 class="card-title">#}
+{#                                    Availability#}
+{#                                </h5>#}
+{#                                <div class="progress">#}
+{#                                    <div class="progress-bar {% if product.quantity < 4 %}bg-danger{% elseif product.quantity > 7 %}bg-success{% else %}bg-warning{% endif %}"#}
+{#                                         style="width: {% if product.quantity < 4 %}20{% elseif product.quantity > 7 %}90{% else %}50{% endif %}%">#}
+{#                                        {{ product.quantity }} pcs#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="col-4">#}
+{#                                <h5 class="card-title">#}
+{#                                    {{ product.price }} / pcs#}
+{#                                </h5>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-body">#}
+{#                        {{ form_start(form) }}#}
+{#                            {{ form_row(form.quantity, {#}
+{#                                'attr': {#}
+{#                                    'min': 1,#}
+{#                                    'max': (product.quantity),#}
+{#                                    'value': 1#}
+{#                                }#}
+{#                            }) }}#}
+{#                            <input type="submit" class="btn btn-primary btn-block" value="Add to cart">#}
+{#                        {{ form_end(form) }}#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

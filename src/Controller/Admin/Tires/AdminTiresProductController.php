@@ -134,13 +134,16 @@ class AdminTiresProductController extends AbstractController
 
     private function slugger($form): string
     {
+        /** @var TireProduct $data */
         $data = $form->getViewData();
         $model = $data->getModel()->getName();
         $width = $data->getWidth();
         $rimSize = $data->getRimSize();
         $height = $data->getHeight();
+        $loadIndex = $data->getLoadIndex();
+        $speedRating = $data->getSpeedRating();
         $model = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $model);
 
-        return "$model-$width-$height-R$rimSize-".uniqid();
+        return "$model-$width-$height-R$rimSize-$loadIndex$speedRating";
     }
 }

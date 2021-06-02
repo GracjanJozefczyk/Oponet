@@ -19,6 +19,47 @@ class TireModelRepository extends ServiceEntityRepository
         parent::__construct($registry, TireModel::class);
     }
 
+    public function paginatorQuery($orderBy, $brand, $model)
+    {
+        if (!$orderBy) {
+            $orderBy = 'id';
+        }
+
+        $q = $this->createQueryBuilder('m')
+            ->orderBy("m.$orderBy", 'ASC')
+            ->innerJoin('m.brand', 'b');
+
+        if ($brand) {
+            $q->andWhere('b.name = :brand');
+            $q->setParameter('brand', $brand);
+        }
+
+        if ($model) {
+            $q->andWhere('m.name LIKE :name');
+            $q->setParameter('name', '%'.$model.'%');
+        }
+
+        return $q;
+    }
+
+    public function getModelsByBrand($brand)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT tire_model.name
+            FROM tire_model
+            INNER JOIN tire_brand
+            ON tire_model.brand_id = tire_brand.id
+            WHERE tire_brand.name = :string
+            ORDER BY name
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['string' => $brand]);
+
+        return $stmt->fetchAllAssociative();
+    }
+
     // /**
     //  * @return TireModel[] Returns an array of TireModel objects
     //  */

@@ -21,14 +21,20 @@ class TireProductRepository extends ServiceEntityRepository
         parent::__construct($registry, TireProduct::class);
     }
 
-    public function paginatorQuery($orderBy): QueryBuilder
+    public function paginatorQuery($orderBy, $model = null): QueryBuilder
     {
         if (!$orderBy) {
             $orderBy = 'id';
         }
-
-        return $this->createQueryBuilder('p')
+        $q = $this->createQueryBuilder('p')
+            ->innerJoin('p.model', 'm')
             ->orderBy("p.$orderBy", 'ASC');
+
+        if ($model) {
+            $q->andWhere("m.id = $model");
+        }
+
+        return $q;
     }
 
     public function findHeightsByWidth($width): array

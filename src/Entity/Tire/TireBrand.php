@@ -41,6 +41,11 @@ class TireBrand
      */
     private $tireModels;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->tireModels = new ArrayCollection();
@@ -120,5 +125,17 @@ class TireBrand
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

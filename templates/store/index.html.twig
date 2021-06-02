@@ -13,27 +13,21 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-4 p-4">
-                        <h4 class="text-white">Contact</h4>
+                        <h4 class="text-white">Office</h4>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                            <li><a href="#" class="text-white">Like on Facebook</a></li>
-                            <li><a href="#" class="text-white">Email me</a></li>
+                            <li><a href="#" class="text-white">info@oponet.pl</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-4 p-4">
-                        <h4 class="text-white">Contact</h4>
+                        <h4 class="text-white">Store</h4>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                            <li><a href="#" class="text-white">Like on Facebook</a></li>
-                            <li><a href="#" class="text-white">Email me</a></li>
+                            <li><a href="#" class="text-white">store@oponet.pl</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-4 p-4">
-                        <h4 class="text-white">Contact</h4>
+                        <h4 class="text-white">Warehouse</h4>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                            <li><a href="#" class="text-white">Like on Facebook</a></li>
-                            <li><a href="#" class="text-white">Email me</a></li>
+                            <li><a href="#" class="text-white">warehouse@oponet.pl</a></li>
                         </ul>
                     </div>
                 </div>
@@ -42,8 +36,7 @@
         <div class="navbar navbar-dark bg-dark shadow-sm">
             <div class="container d-flex justify-content-between">
                 <a href="{{ path('home') }}" class="navbar-brand d-flex align-items-center">
-                    <img src="{{ asset('images/store/wheel.svg') }}" style="width: 30px">
-                    <strong>ponet</strong>
+                    <img src="{{ asset('images/logo_300.png') }}" style="width: 150px">
                 </a>
                 <div class="btn-group">
                     {# USER #}
@@ -96,6 +89,7 @@
     <main role="main">
     {% block content %}
         {% include 'store/_search.html.twig' %}
+        {% include 'store/_brands.html.twig' %}
     {% endblock %}
     </main>
 
